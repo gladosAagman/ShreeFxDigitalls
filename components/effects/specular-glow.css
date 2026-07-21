@@ -1,0 +1,19 @@
+.specular-wrap {
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+/* Canvas extends past the button so the rim glow can bleed outside the edge */
+.specular-wrap__fx {
+  position: absolute;
+  inset: -20px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.specular-wrap__fx canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
