@@ -9,6 +9,9 @@ import { ScrollProgress } from "@/components/layout/scroll-progress";
 import { BackToTop } from "@/components/layout/back-to-top";
 import { OrganizationJsonLd } from "@/components/seo/json-ld";
 import { ThemeProvider, themeInitScript } from "@/components/theme/theme-provider";
+import { ServiceModalProvider } from "@/components/providers/service-modal-provider";
+import { CursorGlow } from "@/components/effects/cursor-glow";
+import { Particles } from "@/components/effects/particles";
 import TargetCursor from "@/components/effects/target-cursor";
 
 const geistSans = Geist({
@@ -74,22 +77,26 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col bg-background text-text">
         <ThemeProvider>
-          <OrganizationJsonLd />
-          <TargetCursor spinDuration={2} hideDefaultCursor parallaxOn cursorColorOnTarget="#F18029" />
-          <ScrollProgress />
-          <a
-            href="#main-content"
-            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-full focus:bg-brand-orange focus:px-4 focus:py-2 focus:text-white"
-          >
-            Skip to content
-          </a>
-          <Navbar />
-          <main id="main-content" className="flex-1">
-            {children}
-          </main>
-          <Footer />
-          <FloatingWhatsApp />
-          <BackToTop />
+          <ServiceModalProvider>
+            <OrganizationJsonLd />
+            <TargetCursor spinDuration={2} hideDefaultCursor parallaxOn cursorColorOnTarget="#F18029" />
+            <Particles />
+            <CursorGlow />
+            <ScrollProgress />
+            <a
+              href="#main-content"
+              className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-full focus:bg-brand-orange focus:px-4 focus:py-2 focus:text-white"
+            >
+              Skip to content
+            </a>
+            <Navbar />
+            <main id="main-content" className="flex-1">
+              {children}
+            </main>
+            <Footer />
+            <FloatingWhatsApp />
+            <BackToTop />
+          </ServiceModalProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -1,13 +1,17 @@
-import Link from "next/link";
+"use client";
+
 import { MessageCircle, CheckCircle2, ArrowRight } from "lucide-react";
 import { Container, Section } from "@/components/layout/container";
 import { Reveal } from "@/components/animations/reveal";
 import { Button } from "@/components/ui/button";
 import { getServiceBySlug } from "@/content/services";
 import { whatsappLink } from "@/config/site";
+import { useServiceModal } from "@/components/providers/service-modal-provider";
 
 export function FeaturedService() {
   const service = getServiceBySlug("whatsapp-business-api");
+  const { openService } = useServiceModal();
+
   if (!service) return null;
 
   return (
@@ -27,10 +31,8 @@ export function FeaturedService() {
                     Talk to an Expert
                   </a>
                 </Button>
-                <Button variant="glass" size="lg" className="text-white" asChild>
-                  <Link href={`/services/${service.slug}`}>
-                    Learn More <ArrowRight className="h-4 w-4" />
-                  </Link>
+                <Button variant="glass" size="lg" className="text-white" onClick={() => openService(service.slug)}>
+                  Learn More <ArrowRight className="h-4 w-4" />
                 </Button>
               </div>
             </div>
