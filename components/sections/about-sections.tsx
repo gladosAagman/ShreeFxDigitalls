@@ -4,6 +4,7 @@ import { Reveal, StaggerContainer, StaggerItem } from "@/components/animations/r
 import { companyTimeline } from "@/content/site-data";
 import { getAccent } from "@/lib/accent";
 import { cn } from "@/lib/utils";
+import { TiltCard } from "@/components/animations/tilt-card";
 
 export function CompanyStory() {
   return (
@@ -104,24 +105,26 @@ export function CoreValues() {
             const accent = getAccent(i);
             return (
               <StaggerItem key={value.title}>
-                <div
-                  className={cn(
-                    "card-liquid group h-full rounded-[var(--radius-xl)] border border-neutral-200 bg-surface p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[var(--shadow-md)]",
-                    accent.glow
-                  )}
-                >
-                  <span
+                <TiltCard maxTilt={5}>
+                  <div
                     className={cn(
-                      "flex h-11 w-11 items-center justify-center rounded-xl transition-all duration-300 group-hover:rotate-6 group-hover:scale-110",
-                      accent.badge,
-                      accent.iconHover
+                      "card-liquid group h-full rounded-[var(--radius-xl)] border border-neutral-200 bg-surface p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[var(--shadow-md)]",
+                      accent.glow
                     )}
                   >
-                    <value.icon className="h-5 w-5" />
-                  </span>
-                  <h3 className="mt-4 text-lg font-semibold text-text">{value.title}</h3>
-                  <p className="mt-2 text-[15px] leading-relaxed text-text-muted">{value.description}</p>
-                </div>
+                    <span
+                      className={cn(
+                        "flex h-11 w-11 items-center justify-center rounded-xl transition-all duration-300 group-hover:rotate-6 group-hover:scale-110",
+                        accent.badge,
+                        accent.iconHover
+                      )}
+                    >
+                      <value.icon className="h-5 w-5" />
+                    </span>
+                    <h3 className="mt-4 text-lg font-semibold text-text">{value.title}</h3>
+                    <p className="mt-2 text-[15px] leading-relaxed text-text-muted">{value.description}</p>
+                  </div>
+                </TiltCard>
               </StaggerItem>
             );
           })}
@@ -133,16 +136,20 @@ export function CoreValues() {
 
 export function GrowthTimeline() {
   return (
-    <Section className="bg-surface-muted">
+    <Section className="bg-surface-muted" id="journey">
       <Container className="max-w-3xl">
         <SectionHeader badge="Our Journey" title="Growth Timeline" />
-        <div className="relative mt-14 space-y-8 border-l border-neutral-300 pl-8">
+        <div className="relative mt-14 space-y-12 border-l border-neutral-300 pl-8">
           {companyTimeline.map((item, i) => (
             <Reveal key={item.year} delay={i * 0.08} className="relative">
-              <span className="absolute -left-[calc(2rem+5px)] top-1.5 h-3 w-3 rounded-full bg-brand-orange ring-4 ring-brand-orange/15" />
-              <p className="text-sm font-semibold text-brand-orange">{item.year}</p>
-              <h3 className="mt-1 text-lg font-semibold text-text">{item.title}</h3>
-              <p className="mt-1 text-[15px] leading-relaxed text-text-muted">{item.description}</p>
+              <span className="absolute -left-[calc(2rem+5px)] top-5 h-3 w-3 rounded-full bg-brand-orange ring-4 ring-brand-orange/15" />
+              <TiltCard maxTilt={3}>
+                <div className="glass-panel group rounded-[var(--radius-xl)] border border-neutral-200/50 bg-surface/50 p-6 shadow-sm transition-all hover:shadow-[var(--shadow-md)]">
+                  <p className="text-sm font-semibold text-brand-orange">{item.year}</p>
+                  <h3 className="mt-1 text-lg font-semibold text-text">{item.title}</h3>
+                  <p className="mt-2 text-[15px] leading-relaxed text-text-muted">{item.description}</p>
+                </div>
+              </TiltCard>
             </Reveal>
           ))}
         </div>
@@ -168,10 +175,12 @@ export function TeamCulture() {
             { title: "Innovation-Driven", description: "We test new approaches before they become mainstream." },
           ].map((item) => (
             <StaggerItem key={item.title}>
-              <div className="card-liquid h-full rounded-[var(--radius-xl)] border border-neutral-200 bg-surface p-6">
-                <h3 className="text-base font-semibold text-text">{item.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-text-muted">{item.description}</p>
-              </div>
+              <TiltCard maxTilt={5}>
+                <div className="card-liquid h-full rounded-[var(--radius-xl)] border border-neutral-200 bg-surface p-6">
+                  <h3 className="text-base font-semibold text-text">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-text-muted">{item.description}</p>
+                </div>
+              </TiltCard>
             </StaggerItem>
           ))}
         </StaggerContainer>

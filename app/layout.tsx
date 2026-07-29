@@ -9,8 +9,6 @@ import { ScrollProgress } from "@/components/layout/scroll-progress";
 import { BackToTop } from "@/components/layout/back-to-top";
 import { OrganizationJsonLd } from "@/components/seo/json-ld";
 import { ThemeProvider, themeInitScript } from "@/components/theme/theme-provider";
-import { CursorGlow } from "@/components/effects/cursor-glow";
-import { Particles } from "@/components/effects/particles";
 import TargetCursor from "@/components/effects/target-cursor";
 
 const geistSans = Geist({
@@ -68,6 +66,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
+      data-scroll-behavior="smooth"
       className={`${geistSans.variable} ${geistMono.variable} ${manrope.variable} h-full antialiased`}
     >
       <head>
@@ -77,8 +76,6 @@ export default function RootLayout({
         <ThemeProvider>
           <OrganizationJsonLd />
           <TargetCursor spinDuration={2} hideDefaultCursor parallaxOn cursorColorOnTarget="#F18029" />
-          <Particles />
-          <CursorGlow />
           <ScrollProgress />
           <a
             href="#main-content"

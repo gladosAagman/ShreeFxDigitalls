@@ -5,8 +5,7 @@ import { Reveal } from "@/components/animations/reveal";
 import { TextReveal } from "@/components/animations/text-reveal";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/components/theme/theme-provider";
-import { GridScan } from "@/components/effects/grid-scan";
-import SplashCursor from "@/components/effects/splash-cursor";
+import { Particles } from "@/components/effects/particles";
 
 export function PageHero({
   badge,
@@ -25,37 +24,20 @@ export function PageHero({
 
   return (
     <section className={cn("relative flex min-h-screen items-center overflow-hidden pt-36 pb-20 md:pt-44 md:pb-28", className)}>
-      {theme === "light" ? (
-        <SplashCursor
-          DYE_RESOLUTION={720}
-          PRESSURE_ITERATIONS={14}
-          SPLAT_RADIUS={0.15}
-          DENSITY_DISSIPATION={4}
-          COLOR_UPDATE_SPEED={6}
+      <div className={cn("pointer-events-none absolute inset-0", theme === "dark" ? "opacity-40" : "opacity-[0.15]")} aria-hidden>
+        <Particles
+          className="absolute inset-0"
+          quantity={120}
+          ease={80}
+          color={theme === "dark" ? "#F18029" : "#c9691d"}
+          refresh
         />
-      ) : null}
-      <div className="mesh-gradient-bg pointer-events-none absolute inset-0" aria-hidden />
-      {theme === "dark" ? (
-        <div
-          className="pointer-events-none absolute inset-0"
-          aria-hidden
-          style={{
-            background:
-              "radial-gradient(65% 55% at 50% 0%, color-mix(in oklab, #3b82f6 30%, transparent) 0%, transparent 70%)," +
-              "radial-gradient(45% 40% at 85% 100%, color-mix(in oklab, #2563eb 22%, transparent) 0%, transparent 70%)",
-          }}
-        />
-      ) : null}
-      <div className={cn("absolute inset-0", theme === "dark" ? "opacity-25" : "opacity-[0.14]")} aria-hidden>
-        <GridScan
-          sensitivity={0.5}
-          lineThickness={1}
-          linesColor={theme === "dark" ? "#324a7a" : "#c9c2d6"}
-          gridScale={0.28}
-          scanColor="#3b82f6"
-          scanOpacity={0.5}
-          enablePost={false}
-          noiseIntensity={0.008}
+        <Particles
+          className="absolute inset-0"
+          quantity={80}
+          ease={120}
+          color={theme === "dark" ? "#f1a519" : "#c98510"}
+          refresh
         />
       </div>
       <Container className="relative mx-auto max-w-3xl text-center">
