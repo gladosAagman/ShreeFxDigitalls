@@ -35,7 +35,7 @@ export function FinalCta({
               </Reveal>
               <Reveal delay={0.25} className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
                 <Magnetic>
-                  <Button size="lg" className="bg-surface text-brand-orange-dark hover:bg-white/90 hover:scale-[1.03]" asChild>
+                  <Button size="lg" className="hover:scale-[1.03]" asChild>
                     <Link href="/contact">
                       <TextRoll>Book Free Consultation</TextRoll>
                       <ArrowRight className="h-4 w-4" />

@@ -69,6 +69,8 @@ function SplashCursor({
     let pointers = [new pointerPrototype()];
 
     const { gl, ext } = getWebGLContext(canvas);
+    if (!gl || !ext) return;
+
     if (!ext.supportLinearFiltering) {
       config.DYE_RESOLUTION = 256;
       config.SHADING = false;
@@ -86,6 +88,8 @@ function SplashCursor({
       const isWebGL2 = !!gl;
       if (!isWebGL2) gl = canvas.getContext("webgl", params) || canvas.getContext("experimental-webgl", params);
 
+      if (!gl) return { gl: null, ext: null };
+
       let halfFloat;
       let supportLinearFiltering;
       if (isWebGL2) {
@@ -97,7 +101,7 @@ function SplashCursor({
       }
       gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
-      const halfFloatTexType = isWebGL2 ? gl.HALF_FLOAT : halfFloat && halfFloat.HALF_FLOAT_OES;
+      let halfFloatTexType = isWebGL2 ? gl.HALF_FLOAT : halfFloat && halfFloat.HALF_FLOAT_OES;
       let formatRGBA;
       let formatRG;
       let formatR;
@@ -111,6 +115,14 @@ function SplashCursor({
         formatRG = getSupportedFormat(gl, gl.RGBA, gl.RGBA, halfFloatTexType);
         formatR = getSupportedFormat(gl, gl.RGBA, gl.RGBA, halfFloatTexType);
       }
+
+      // Safe fallback if the device does not support half-float render targets
+      if (!formatRGBA) {
+        formatRGBA = { internalFormat: gl.RGBA, format: gl.RGBA };
+        halfFloatTexType = gl.UNSIGNED_BYTE;
+      }
+      if (!formatRG) formatRG = { internalFormat: gl.RGBA, format: gl.RGBA };
+      if (!formatR) formatR = { internalFormat: gl.RGBA, format: gl.RGBA };
 
       return {
         gl,
