@@ -31,12 +31,12 @@ export function PortfolioCard({ project, index = 0 }: { project: PortfolioProjec
           <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
           {/* Industry badge */}
-          <span className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-text shadow-sm backdrop-blur-sm">
+          <span className="absolute left-4 top-4 rounded-full border border-white/20 bg-black/40 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-white shadow-lg backdrop-blur-md">
             {project.industry}
           </span>
 
           {/* Arrow icon */}
-          <span className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-text opacity-0 shadow-md transition-all duration-300 group-hover:rotate-45 group-hover:opacity-100">
+          <span className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-black/40 text-white opacity-0 shadow-lg backdrop-blur-md transition-all duration-300 group-hover:rotate-45 group-hover:opacity-100">
             <ArrowUpRight className="h-4 w-4" />
           </span>
 
