@@ -434,3 +434,44 @@ body {
     opacity: 0;
   }
 }
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: color-mix(in oklab, var(--color-text-muted) 40%, transparent);
+  border-radius: 10px;
+}
+
+.custom-scrollbar:hover::-webkit-scrollbar-thumb {
+  background: color-mix(in oklab, var(--color-text-muted) 70%, transparent);
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: color-mix(in oklab, white 15%, transparent);
+}
+
+.dark .custom-scrollbar:hover::-webkit-scrollbar-thumb {
+  background: color-mix(in oklab, white 30%, transparent);
+}
+
+/* Hide Scrollbar */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+/* Modal Scroll Lock */
+html:has(body.modal-open),
+body.modal-open {
+  overflow: hidden;
+}

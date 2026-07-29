@@ -105,8 +105,14 @@ export function SpecularGlow({
 
     let disposed = false;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const renderer = new Renderer({ alpha: true, premultipliedAlpha: true, antialias: true, dpr });
+    let renderer;
+    try {
+      renderer = new Renderer({ alpha: true, premultipliedAlpha: true, antialias: true, dpr });
+    } catch (e) {
+      return; // Gracefully degrade if WebGL is disabled or unsupported
+    }
     const gl = renderer.gl;
+    if (!gl) return;
     gl.clearColor(0, 0, 0, 0);
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
@@ -204,14 +210,20 @@ export function SpecularGlow({
       bright += (brightTarget - bright) * (1 - Math.exp(-dt * 8));
 
       if (bright < 0.002 && brightTarget < 0.002) {
-        // Nothing visible to draw right now — skip the GPU draw call entirely.
         return;
       }
+
+      let r = p.radius;
+      if (r === 999) {
+        const style = window.getComputedStyle(btn);
+        r = parseFloat(style.borderRadius) || 0;
+      }
+      r = Math.min(r, Math.min(sizeRef.w, sizeRef.h) / 2);
 
       lineC.set(p.lineColor);
       baseC.set(p.baseColor);
       program.uniforms.uAngle.value = angle;
-      program.uniforms.uRadius.value = Math.min(p.radius, Math.min(sizeRef.w, sizeRef.h) / 2) * dpr;
+      program.uniforms.uRadius.value = r * dpr;
       program.uniforms.uLineColor.value = [lineC.r, lineC.g, lineC.b];
       program.uniforms.uBaseColor.value = [baseC.r, baseC.g, baseC.b];
       program.uniforms.uIntensity.value = p.intensity * bright;
