@@ -7,6 +7,7 @@ import { Container, Section, SectionHeader } from "@/components/layout/container
 import { Icon } from "@/lib/icon-map";
 import { getAccent } from "@/lib/accent";
 import { cn } from "@/lib/utils";
+import ScrollStack, { ScrollStackItem } from "@/components/effects/scroll-stack";
 import { useServiceModal } from "@/components/providers/service-modal-provider";
 
 export function ServiceCategoriesGrid() {
@@ -40,47 +41,49 @@ export function ServiceCategoriesGrid() {
           ))}
         </div>
 
-        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
-          {filtered.map((service, i) => {
-            const accent = getAccent(i);
-            return (
-              <div
-                key={service.slug}
-                className={cn(
-                  "overflow-hidden rounded-[var(--radius-xl)] border border-neutral-200 bg-surface shadow-[var(--shadow-lg)] transition-all hover:-translate-y-1 hover:shadow-[var(--shadow-xl)]",
-                  accent.glow
-                )}
-              >
-                <button onClick={() => openService(service.slug)} className="focus-ring group flex h-full w-full flex-col p-8 sm:p-10 text-left">
-                  <span
-                    className={cn(
-                      "flex h-14 w-14 items-center justify-center rounded-2xl transition-all duration-300 group-hover:-rotate-6 group-hover:scale-110",
-                      accent.badge,
-                      accent.iconHover
-                    )}
-                  >
-                    <Icon name={service.icon} className="h-7 w-7" />
-                  </span>
-                  <h3 className="mt-6 text-2xl font-bold text-text transition-colors group-hover:text-brand-orange">
-                    {service.name}
-                  </h3>
-                  <p className="mt-3 text-[16px] leading-relaxed text-text-muted">{service.summary}</p>
-                  <ul className="mt-5 grid grid-cols-1 gap-2 text-sm text-text-muted sm:grid-cols-2">
-                    {service.benefits.slice(0, 4).map((b) => (
-                      <li key={b} className="flex items-start gap-2">
-                        <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-brand-orange" />
-                        {b}
-                      </li>
-                    ))}
-                  </ul>
-                  <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-orange">
-                    Learn More
-                    <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
-                  </span>
-                </button>
-              </div>
-            );
-          })}
+        <div className="mt-6">
+          <ScrollStack key={active} useWindowScroll className="mx-auto max-w-4xl">
+            {filtered.map((service, i) => {
+              const accent = getAccent(i);
+              return (
+                <ScrollStackItem
+                  key={service.slug}
+                  itemClassName={cn(
+                    "overflow-hidden rounded-[var(--radius-xl)] border border-neutral-200 bg-surface shadow-[var(--shadow-lg)]",
+                    accent.glow
+                  )}
+                >
+                  <button onClick={() => openService(service.slug)} className="focus-ring group flex h-full w-full flex-col p-8 sm:p-10 text-left">
+                    <span
+                      className={cn(
+                        "flex h-14 w-14 items-center justify-center rounded-2xl transition-all duration-300 group-hover:-rotate-6 group-hover:scale-110",
+                        accent.badge,
+                        accent.iconHover
+                      )}
+                    >
+                      <Icon name={service.icon} className="h-7 w-7" />
+                    </span>
+                    <h3 className="mt-6 text-2xl font-bold text-text transition-colors group-hover:text-brand-orange">
+                      {service.name}
+                    </h3>
+                    <p className="mt-3 text-[16px] leading-relaxed text-text-muted">{service.summary}</p>
+                    <ul className="mt-5 grid grid-cols-1 gap-2 text-sm text-text-muted sm:grid-cols-2">
+                      {service.benefits.slice(0, 4).map((b) => (
+                        <li key={b} className="flex items-start gap-2">
+                          <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-brand-orange" />
+                          {b}
+                        </li>
+                      ))}
+                    </ul>
+                    <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-orange">
+                      Learn More
+                      <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+                    </span>
+                  </button>
+                </ScrollStackItem>
+              );
+            })}
+          </ScrollStack>
         </div>
       </Container>
     </Section>
