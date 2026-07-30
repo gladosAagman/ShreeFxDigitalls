@@ -11,6 +11,7 @@ export const blogPosts: BlogPost[] = [
     authorRole: "Marketing Strategy",
     publishedAt: "2026-01-12",
     readingTime: "7 min read",
+    image: "https://images.unsplash.com/photo-1611746872915-64382b5c76da?w=1200&q=80",
     content: [
       "WhatsApp has become the default communication channel for businesses across India, and the official Business API unlocks capabilities far beyond a personal chat account.",
       "In this guide, we cover verification requirements, broadcast messaging rules, automated reply flows, and how to connect WhatsApp to your CRM for a complete lead-to-close workflow.",
@@ -29,6 +30,7 @@ export const blogPosts: BlogPost[] = [
     authorRole: "Performance Marketing",
     publishedAt: "2025-12-02",
     readingTime: "6 min read",
+    image: "https://images.unsplash.com/photo-1533750349088-cd871a92f312?w=1200&q=80",
     content: [
       "Choosing between Meta Ads and Google Ads is one of the most common questions we hear from new clients, and the right answer depends on demand type.",
       "Google Ads captures existing, high-intent demand — people actively searching for a solution. Meta Ads creates demand by reaching people based on interests and behavior before they're actively searching.",
@@ -45,6 +47,7 @@ export const blogPosts: BlogPost[] = [
     authorRole: "SEO Specialist",
     publishedAt: "2025-11-18",
     readingTime: "5 min read",
+    image: "https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1200&q=80",
     content: [
       "Local SEO is often the highest-ROI channel for service businesses because it targets customers who are ready to buy, right now, nearby.",
       "This checklist covers Google Business Profile optimization, citation consistency, review generation, and on-page signals that influence local rankings.",
@@ -61,6 +64,7 @@ export const blogPosts: BlogPost[] = [
     authorRole: "Automation Lead",
     publishedAt: "2025-10-27",
     readingTime: "6 min read",
+    image: "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=1200&q=80",
     content: [
       "A poorly designed chatbot can do more harm than good. We share the principles behind chatbots that actually move leads through your funnel.",
       "Key ideas include fast escalation paths to humans, short qualifying question sequences, and clear expectation-setting about response times.",
@@ -77,6 +81,7 @@ export const blogPosts: BlogPost[] = [
     authorRole: "Frontend Engineering",
     publishedAt: "2025-09-30",
     readingTime: "8 min read",
+    image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200&q=80",
     content: [
       "Performance is a feature, not an afterthought. Here's the exact checklist our engineering team runs before every website launch.",
       "It covers image optimization, font loading strategy, code splitting, and how we use Server Components to minimize JavaScript sent to the browser.",
@@ -93,6 +98,7 @@ export const blogPosts: BlogPost[] = [
     authorRole: "Creative Director",
     publishedAt: "2025-09-05",
     readingTime: "5 min read",
+    image: "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=1200&q=80",
     content: [
       "Founders often jump straight to paid ads before their brand identity is clear, which wastes budget on inconsistent creative.",
       "We break down the minimum viable brand system every startup should have: logo, color palette, typography, and a one-line positioning statement.",
