@@ -7,6 +7,7 @@ export interface NebulaShaderProps {
   hasActiveReminders?: boolean;
   hasUpcomingReminders?: boolean;
   disableCenterDimming?: boolean;
+  tintColor?: [number, number, number];
   className?: string;
 }
 
@@ -14,6 +15,7 @@ export function NebulaShader({
   hasActiveReminders = false,
   hasUpcomingReminders = false,
   disableCenterDimming = false,
+  tintColor = [0.9, 0.45, 0.15],
   className = "",
 }: NebulaShaderProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -25,8 +27,9 @@ export function NebulaShader({
       mat.uniforms.hasActiveReminders.value = hasActiveReminders;
       mat.uniforms.hasUpcomingReminders.value = hasUpcomingReminders;
       mat.uniforms.disableCenterDimming.value = disableCenterDimming;
+      mat.uniforms.baseTint.value.set(...tintColor);
     }
-  }, [hasActiveReminders, hasUpcomingReminders, disableCenterDimming]);
+  }, [hasActiveReminders, hasUpcomingReminders, disableCenterDimming, tintColor]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -55,6 +58,7 @@ export function NebulaShader({
       uniform bool hasActiveReminders;
       uniform bool hasUpcomingReminders;
       uniform bool disableCenterDimming;
+      uniform vec3 baseTint;
       varying vec2 vUv;
 
       #define t iTime
@@ -78,10 +82,10 @@ export function NebulaShader({
           float f  = clamp((rz - map(p + 0.1)) * 0.5, -0.1, 1.0);
 
           vec3 base = hasActiveReminders
-            ? vec3(0.18,0.06,0.01) + vec3(5.5,2.2,0.6)*f
+            ? baseTint * 0.6 + baseTint * 4.0 * f
             : hasUpcomingReminders
-            ? vec3(0.15,0.09,0.02) + vec3(5.0,3.2,0.9)*f
-            : vec3(0.12,0.06,0.01) + vec3(5.2,2.6,0.7)*f;
+            ? baseTint * 0.5 + baseTint * 3.5 * f
+            : baseTint * 0.4 + baseTint * 3.0 * f;
 
           col = col * base + smoothstep(2.5, 0.0, rz) * 0.7 * base;
           d += min(rz, 1.0);
@@ -111,6 +115,7 @@ export function NebulaShader({
       hasActiveReminders: { value: hasActiveReminders },
       hasUpcomingReminders: { value: hasUpcomingReminders },
       disableCenterDimming: { value: disableCenterDimming },
+      baseTint: { value: new THREE.Vector3(...tintColor) },
     };
 
     const material = new THREE.ShaderMaterial({ vertexShader, fragmentShader, uniforms, transparent: true });
@@ -141,6 +146,7 @@ export function NebulaShader({
       mesh.geometry.dispose();
       renderer.dispose();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <div ref={containerRef} className={`absolute inset-0 ${className}`} aria-hidden />;
