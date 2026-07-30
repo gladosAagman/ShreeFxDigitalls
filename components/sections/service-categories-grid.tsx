@@ -43,14 +43,13 @@ export function ServiceCategoriesGrid() {
 
         <div className="mt-6">
           <ScrollStack key={active} useWindowScroll className="mx-auto max-w-4xl">
-
             {filtered.map((service, i) => {
               const accent = getAccent(i);
               return (
                 <ScrollStackItem
                   key={service.slug}
                   itemClassName={cn(
-                    "card-liquid overflow-hidden rounded-[var(--radius-xl)] border border-neutral-200 bg-surface shadow-[var(--shadow-lg)]",
+                    "overflow-hidden rounded-[var(--radius-xl)] border border-neutral-200 bg-surface shadow-[var(--shadow-lg)]",
                     accent.glow
                   )}
                 >

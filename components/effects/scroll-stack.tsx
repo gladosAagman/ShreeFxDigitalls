@@ -40,6 +40,7 @@ export default function ScrollStack({
   stackPosition = "20%",
   scaleEndPosition = "10%",
   baseScale = 0.85,
+  scaleDuration = 0.5,
   rotationAmount = 0,
   blurAmount = 0,
   useWindowScroll = false,
@@ -68,10 +69,18 @@ export default function ScrollStack({
 
   const getScrollData = useCallback(() => {
     if (useWindowScroll) {
-      return { scrollTop: window.scrollY, containerHeight: window.innerHeight };
+      return { 
+        scrollTop: window.scrollY, 
+        containerHeight: window.innerHeight,
+        scrollContainer: document.documentElement
+      };
     }
     const scroller = scrollerRef.current!;
-    return { scrollTop: scroller.scrollTop, containerHeight: scroller.clientHeight };
+    return { 
+      scrollTop: scroller.scrollTop, 
+      containerHeight: scroller.clientHeight,
+      scrollContainer: scroller
+    };
   }, [useWindowScroll]);
 
   const getElementOffset = useCallback(
@@ -120,7 +129,9 @@ export default function ScrollStack({
         for (let j = 0; j < cardsRef.current.length; j++) {
           const jCardTop = getElementOffset(cardsRef.current[j]);
           const jTriggerStart = jCardTop - stackPositionPx - itemStackDistance * j;
-          if (scrollTop >= jTriggerStart) topCardIndex = j;
+          if (scrollTop >= jTriggerStart) {
+            topCardIndex = j;
+          }
         }
         if (i < topCardIndex) {
           const depthInStack = topCardIndex - i;
@@ -155,8 +166,10 @@ export default function ScrollStack({
       if (hasChanged) {
         const transform = `translate3d(0, ${newTransform.translateY}px, 0) scale(${newTransform.scale}) rotate(${newTransform.rotation}deg)`;
         const filter = newTransform.blur > 0 ? `blur(${newTransform.blur}px)` : "";
+        
         card.style.transform = transform;
         card.style.filter = filter;
+        
         lastTransformsRef.current.set(i, newTransform);
       }
 
@@ -199,6 +212,7 @@ export default function ScrollStack({
         easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smoothWheel: true,
         touchMultiplier: 2,
+        infinite: false,
         wheelMultiplier: 1,
         lerp: 0.1,
         syncTouch: true,
@@ -224,11 +238,17 @@ export default function ScrollStack({
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       touchMultiplier: 2,
+      infinite: false,
+      gestureOrientationHandler: true,
+      normalizeWheel: true,
       wheelMultiplier: 1,
+      touchInertiaMultiplier: 35,
       lerp: 0.1,
       syncTouch: true,
       syncTouchLerp: 0.075,
-    });
+      touchInertia: 0.6
+    } as any); // Type assertion needed because some properties might be from a newer Lenis version
+    
     lenis.on("scroll", handleScroll);
     const raf = (time: number) => {
       lenis.raf(time);
@@ -260,7 +280,9 @@ export default function ScrollStack({
       card.style.transformOrigin = "top center";
       card.style.backfaceVisibility = "hidden";
       card.style.transform = "translateZ(0)";
+      card.style.webkitTransform = "translateZ(0)";
       card.style.perspective = "1000px";
+      (card.style as any).webkitPerspective = "1000px";
     });
 
     setupLenis();
@@ -274,8 +296,21 @@ export default function ScrollStack({
       transformsCache.clear();
       isUpdatingRef.current = false;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [itemDistance, useWindowScroll, setupLenis, updateCardTransforms]);
+  }, [
+    itemDistance, 
+    itemScale,
+    itemStackDistance,
+    stackPosition,
+    scaleEndPosition,
+    baseScale,
+    scaleDuration,
+    rotationAmount,
+    blurAmount,
+    useWindowScroll,
+    onStackComplete,
+    setupLenis, 
+    updateCardTransforms
+  ]);
 
   return (
     <div className={`scroll-stack-scroller ${className}`.trim()} ref={scrollerRef}>

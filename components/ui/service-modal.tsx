@@ -71,7 +71,7 @@ export function ServiceModal({ slug, onClose }: ServiceModalProps) {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1, transition: { duration: 0.25, ease: "easeOut" } }}
             exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.2 } }}
-            className="dark card-liquid relative z-10 flex w-[60vw] sm:w-[55vw] max-w-[1200px] h-[85vh] flex-col lg:flex-row overflow-hidden rounded-[24px] border border-neutral-200 bg-surface text-left shadow-[var(--shadow-glow-purple)]"
+            className="card-liquid relative z-10 flex w-[60vw] sm:w-[55vw] max-w-[1200px] h-[85vh] flex-col lg:flex-row overflow-hidden rounded-[24px] border border-neutral-200 bg-surface text-left shadow-[var(--shadow-glow-purple)]"
           >
             {/* Glass Close Button */}
             <div className="absolute right-5 top-5 z-30">
