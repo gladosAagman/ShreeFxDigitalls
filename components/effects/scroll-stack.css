@@ -34,10 +34,6 @@
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
   position: relative;
-  /* Prevent underlying cards from bleeding through when stacked */
-  isolation: isolate;
-  overflow: hidden;
-  z-index: 1;
 }
 
 @media (max-width: 640px) {
