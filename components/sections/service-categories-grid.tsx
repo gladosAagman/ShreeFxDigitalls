@@ -50,7 +50,7 @@ export function ServiceCategoriesGrid() {
                 <ScrollStackItem
                   key={service.slug}
                   itemClassName={cn(
-                    "card-liquid overflow-hidden rounded-[var(--radius-xl)] border border-neutral-200 bg-surface shadow-[var(--shadow-lg)]",
+                    "overflow-hidden rounded-[var(--radius-xl)] border border-neutral-200 bg-surface shadow-[var(--shadow-lg)]",
                     accent.glow
                   )}
                 >
