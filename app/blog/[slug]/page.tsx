@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Clock, User, ArrowRight } from "lucide-react";
@@ -69,7 +70,16 @@ export default async function BlogPostPage({ params }: Props) {
               </span>
             </div>
 
-            <div className="mt-8 aspect-[16/7] rounded-[var(--radius-xl)] bg-[linear-gradient(135deg,var(--color-brand-orange),var(--color-brand-purple))]" />
+            <div className="relative mt-8 aspect-[16/7] overflow-hidden rounded-[var(--radius-xl)]">
+  <Image
+    src={post.image}
+    alt={post.title}
+    fill
+    priority
+    sizes="(max-width: 768px) 100vw, 768px"
+    className="object-cover"
+  />
+</div>
 
             <div className="prose-content mt-10 space-y-5 text-[17px] leading-relaxed text-text-muted">
               {post.content.map((paragraph, i) => (
