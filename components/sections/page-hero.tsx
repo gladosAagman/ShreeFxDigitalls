@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Container } from "@/components/layout/container";
 import { Reveal } from "@/components/animations/reveal";
 import { TextReveal } from "@/components/animations/text-reveal";
@@ -22,10 +23,17 @@ export function PageHero({
   titleClassName?: string;
 }) {
   const { theme } = useTheme();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const currentTheme = isMounted ? theme : "dark";
 
   return (
     <section className={cn("relative flex min-h-screen items-center overflow-hidden pt-36 pb-20 md:pt-44 md:pb-28", className)}>
-      {theme === "light" ? (
+      {currentTheme === "light" ? (
         <SplashCursor
           DYE_RESOLUTION={720}
           PRESSURE_ITERATIONS={14}
@@ -35,7 +43,7 @@ export function PageHero({
         />
       ) : null}
       <div className="mesh-gradient-bg pointer-events-none absolute inset-0" aria-hidden />
-      {theme === "dark" ? (
+      {currentTheme === "dark" ? (
         <div
           className="pointer-events-none absolute inset-0"
           aria-hidden
@@ -46,11 +54,11 @@ export function PageHero({
           }}
         />
       ) : null}
-      <div className={cn("absolute inset-0", theme === "dark" ? "opacity-25" : "opacity-[0.14]")} aria-hidden>
+      <div className={cn("absolute inset-0", currentTheme === "dark" ? "opacity-25" : "opacity-[0.14]")} aria-hidden>
         <GridScan
           sensitivity={0.5}
           lineThickness={1}
-          linesColor={theme === "dark" ? "#324a7a" : "#c9c2d6"}
+          linesColor={currentTheme === "dark" ? "#324a7a" : "#c9c2d6"}
           gridScale={0.28}
           scanColor="#3b82f6"
           scanOpacity={0.5}
