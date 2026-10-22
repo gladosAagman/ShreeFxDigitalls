@@ -4,18 +4,32 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, onMouseMove, ...props }, ref) => {
+  ({ className, onMouseMove, onMouseEnter, onMouseLeave, ...props }, ref) => {
+    const rectRef = React.useRef<DOMRect | null>(null);
+
+    const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+      rectRef.current = e.currentTarget.getBoundingClientRect();
+      onMouseEnter?.(e);
+    };
+
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-      const rect = e.currentTarget.getBoundingClientRect();
+      const rect = rectRef.current || e.currentTarget.getBoundingClientRect();
       e.currentTarget.style.setProperty("--spot-x", `${e.clientX - rect.left}px`);
       e.currentTarget.style.setProperty("--spot-y", `${e.clientY - rect.top}px`);
       onMouseMove?.(e);
     };
 
+    const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+      rectRef.current = null;
+      onMouseLeave?.(e);
+    };
+
     return (
       <div
         ref={ref}
+        onMouseEnter={handleMouseEnter}
         onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
         className={cn(
           "card-spotlight rounded-[var(--radius-xl)] border border-neutral-200 bg-surface p-6 shadow-[var(--shadow-sm)] transition-all duration-300",
           className

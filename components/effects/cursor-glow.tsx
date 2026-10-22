@@ -15,8 +15,7 @@ export function CursorGlow() {
 
     const apply = () => {
       raf = 0;
-      el.style.setProperty("--cursor-x", `${pendingX}px`);
-      el.style.setProperty("--cursor-y", `${pendingY}px`);
+      el.style.transform = `translate3d(${pendingX}px, ${pendingY}px, 0)`;
     };
 
     const onMove = (e: PointerEvent) => {

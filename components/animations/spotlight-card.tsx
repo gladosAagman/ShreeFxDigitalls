@@ -1,33 +1,40 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 export function SpotlightCard({ children, className }: { children: ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [pos, setPos] = useState({ x: 50, y: 50 });
-  const [active, setActive] = useState(false);
+  const rectRef = useRef<DOMRect | null>(null);
+
+  function handleMouseEnter() {
+    if (ref.current) {
+      rectRef.current = ref.current.getBoundingClientRect();
+    }
+  }
 
   function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
     const el = ref.current;
     if (!el) return;
-    const rect = el.getBoundingClientRect();
-    setPos({ x: ((e.clientX - rect.left) / rect.width) * 100, y: ((e.clientY - rect.top) / rect.height) * 100 });
+    const rect = rectRef.current || el.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    el.style.setProperty("--spot-x", `${x}px`);
+    el.style.setProperty("--spot-y", `${y}px`);
+  }
+
+  function handleMouseLeave() {
+    rectRef.current = null;
   }
 
   return (
     <div
       ref={ref}
+      onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
-      onMouseEnter={() => setActive(true)}
-      onMouseLeave={() => setActive(false)}
-      className={cn("card-liquid cursor-target", className)}
-      style={{
-        backgroundImage: active
-          ? `radial-gradient(90px circle at ${pos.x}% ${pos.y}%, color-mix(in oklab, var(--color-brand-orange) 20%, transparent), transparent 70%)`
-          : undefined,
-      }}
+      onMouseLeave={handleMouseLeave}
+      className={cn("card-liquid card-spotlight cursor-target", className)}
     >
       {children}
     </div>

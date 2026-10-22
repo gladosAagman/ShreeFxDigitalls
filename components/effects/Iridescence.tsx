@@ -68,15 +68,24 @@ export default function Iridescence({
   useEffect(() => {
     if (!ctnDom.current) return;
     const ctn = ctnDom.current;
-    const renderer = new Renderer();
+    const renderer = new Renderer({
+      dpr: typeof window !== "undefined" ? Math.min(window.devicePixelRatio || 1, 1.0) : 1,
+      antialias: false,
+    });
     const gl = renderer.gl;
     gl.clearColor(1, 1, 1, 1);
 
     let program: Program;
+    let cachedRect: DOMRect | null = null;
+
+    const updateRect = () => {
+      cachedRect = ctn.getBoundingClientRect();
+    };
 
     function resize() {
-      const scale = 1;
-      renderer.setSize(ctn.offsetWidth * scale, ctn.offsetHeight * scale);
+      updateRect();
+      if (!cachedRect) return;
+      renderer.setSize(cachedRect.width, cachedRect.height);
       if (program) {
         program.uniforms.uResolution.value = new Color(
           gl.canvas.width,
@@ -86,6 +95,7 @@ export default function Iridescence({
       }
     }
     window.addEventListener('resize', resize, false);
+    window.addEventListener('scroll', updateRect, { passive: true });
     resize();
 
     const geometry = new Triangle(gl);
@@ -106,9 +116,16 @@ export default function Iridescence({
 
     const mesh = new Mesh(gl, { geometry, program });
     let animateId: number;
+    let isVisible = true;
+
+    const io = new IntersectionObserver((entries) => {
+      isVisible = entries[0]?.isIntersecting ?? true;
+    }, { threshold: 0 });
+    io.observe(ctn);
 
     function update(t: number) {
       animateId = requestAnimationFrame(update);
+      if (!isVisible || document.visibilityState !== "visible") return;
       program.uniforms.uTime.value = t * 0.001;
       renderer.render({ scene: mesh });
     }
@@ -116,7 +133,7 @@ export default function Iridescence({
     ctn.appendChild(gl.canvas);
 
     function handleMouseMove(e: MouseEvent) {
-      const rect = ctn.getBoundingClientRect();
+      const rect = cachedRect || ctn.getBoundingClientRect();
       const x = (e.clientX - rect.left) / rect.width;
       const y = 1.0 - (e.clientY - rect.top) / rect.height;
       mousePos.current = { x, y };
@@ -124,12 +141,14 @@ export default function Iridescence({
       program.uniforms.uMouse.value[1] = y;
     }
     if (mouseReact) {
-      ctn.addEventListener('mousemove', handleMouseMove);
+      ctn.addEventListener('mousemove', handleMouseMove, { passive: true });
     }
 
     return () => {
       cancelAnimationFrame(animateId);
+      io.disconnect();
       window.removeEventListener('resize', resize);
+      window.removeEventListener('scroll', updateRect);
       if (mouseReact) {
         ctn.removeEventListener('mousemove', handleMouseMove);
       }

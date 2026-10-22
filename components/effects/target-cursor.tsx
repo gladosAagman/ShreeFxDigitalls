@@ -105,11 +105,16 @@ export default function TargetCursor({
     cornersRef.current = cursor.querySelectorAll(".target-cursor-corner");
 
     containingBlockRef.current = getContainingBlock(cursor);
-    const getOffset = () => getContainingBlockOffset(containingBlockRef.current);
+    let cachedOffset = getContainingBlockOffset(containingBlockRef.current);
+    const updateOffset = () => {
+      containingBlockRef.current = getContainingBlock(cursor);
+      cachedOffset = getContainingBlockOffset(containingBlockRef.current);
+    };
 
     let activeTarget: HTMLElement | null = null;
     let currentLeaveHandler: (() => void) | null = null;
     let resumeTimeout: ReturnType<typeof setTimeout> | null = null;
+    let scrollRaf = 0;
 
     const cleanupTarget = (target: HTMLElement) => {
       if (currentLeaveHandler) {
@@ -118,13 +123,15 @@ export default function TargetCursor({
       currentLeaveHandler = null;
     };
 
-    const initialOffset = getOffset();
     gsap.set(cursor, {
       xPercent: -50,
       yPercent: -50,
-      x: window.innerWidth / 2 - initialOffset.x,
-      y: window.innerHeight / 2 - initialOffset.y,
+      x: window.innerWidth / 2 - cachedOffset.x,
+      y: window.innerHeight / 2 - cachedOffset.y,
     });
+
+    const xTo = gsap.quickTo(cursor, "x", { duration: 0.1, ease: "power3.out" });
+    const yTo = gsap.quickTo(cursor, "y", { duration: 0.1, ease: "power3.out" });
 
     const createSpinTimeline = () => {
       if (spinTl.current) {
@@ -171,23 +178,27 @@ export default function TargetCursor({
 
     tickerFnRef.current = tickerFn;
 
-    const moveHandler = (e: MouseEvent) => moveCursor(e.clientX, e.clientY);
-    window.addEventListener("mousemove", moveHandler);
+    const moveHandler = (e: MouseEvent) => {
+      xTo(e.clientX - cachedOffset.x);
+      yTo(e.clientY - cachedOffset.y);
+    };
+    window.addEventListener("mousemove", moveHandler, { passive: true });
 
     const scrollHandler = () => {
-      if (!activeTarget || !cursorRef.current) return;
-      const { x: offsetX, y: offsetY } = getOffset();
-      const mouseX = (gsap.getProperty(cursorRef.current, "x") as number) + offsetX;
-      const mouseY = (gsap.getProperty(cursorRef.current, "y") as number) + offsetY;
-      const elementUnderMouse = document.elementFromPoint(mouseX, mouseY);
-      const isStillOverTarget =
-        elementUnderMouse &&
-        (elementUnderMouse === activeTarget || elementUnderMouse.closest(targetSelector) === activeTarget);
-      if (!isStillOverTarget) {
-        if (currentLeaveHandler) {
+      if (!activeTarget || !cursorRef.current || scrollRaf) return;
+      scrollRaf = requestAnimationFrame(() => {
+        scrollRaf = 0;
+        if (!activeTarget || !cursorRef.current) return;
+        const mouseX = (gsap.getProperty(cursorRef.current, "x") as number) + cachedOffset.x;
+        const mouseY = (gsap.getProperty(cursorRef.current, "y") as number) + cachedOffset.y;
+        const elementUnderMouse = document.elementFromPoint(mouseX, mouseY);
+        const isStillOverTarget =
+          elementUnderMouse &&
+          (elementUnderMouse === activeTarget || elementUnderMouse.closest(targetSelector) === activeTarget);
+        if (!isStillOverTarget && currentLeaveHandler) {
           currentLeaveHandler();
         }
-      }
+      });
     };
     window.addEventListener("scroll", scrollHandler, { passive: true });
 
@@ -252,7 +263,7 @@ export default function TargetCursor({
 
       const rect = target.getBoundingClientRect();
       const { borderWidth, cornerSize } = constants;
-      const { x: offsetX, y: offsetY } = getOffset();
+      const { x: offsetX, y: offsetY } = cachedOffset;
       const cursorX = gsap.getProperty(cursorRef.current, "x") as number;
       const cursorY = gsap.getProperty(cursorRef.current, "y") as number;
 
@@ -359,13 +370,16 @@ export default function TargetCursor({
     window.addEventListener("mouseover", enterHandler, { passive: true });
 
     const resizeHandler = () => {
-      containingBlockRef.current = getContainingBlock(cursor);
+      updateOffset();
     };
     window.addEventListener("resize", resizeHandler);
 
     return () => {
       if (tickerFnRef.current) {
         gsap.ticker.remove(tickerFnRef.current);
+      }
+      if (scrollRaf) {
+        cancelAnimationFrame(scrollRaf);
       }
 
       window.removeEventListener("mousemove", moveHandler);

@@ -100,7 +100,7 @@ vec2 sceneC(vec2 frag, vec2 r) {
   float z = 0.0;
   float d = 1e3;
   vec4 O = vec4(0.0);
-  for (int k = 0; k < 39; k++) {
+  for (int k = 0; k < 18; k++) {
     if (d <= 1e-4) break;
     O = z * normalize(vec4(P, uZoom, 0.0)) - vec4(0.0, 4.0, 1.0, 0.0) / 4.5;
     d = 1.0 - sqrt(length(O * O));
@@ -229,9 +229,9 @@ export default function Lightfall({
     let renderer: Renderer;
     try {
       renderer = new Renderer({
-        dpr: dpr ?? (typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1),
+        dpr: dpr ?? (typeof window !== "undefined" ? Math.min(window.devicePixelRatio || 1, 1.0) : 1),
         alpha: true,
-        antialias: true,
+        antialias: false,
       });
     } catch (e) {
       return; // WebGL not supported
@@ -286,15 +286,22 @@ export default function Lightfall({
     const mesh = new Mesh(gl, { geometry, program });
     meshRef.current = mesh;
 
+    let cachedRect: DOMRect | null = null;
+    const updateRect = () => {
+      cachedRect = container.getBoundingClientRect();
+    };
+
     const resize = () => {
-      const rect = container.getBoundingClientRect();
-      renderer.setSize(rect.width, rect.height);
+      updateRect();
+      if (!cachedRect) return;
+      renderer.setSize(cachedRect.width, cachedRect.height);
       uniforms.iResolution.value = [gl.drawingBufferWidth, gl.drawingBufferHeight, 1];
     };
 
     resize();
     const ro = new ResizeObserver(resize);
     ro.observe(container);
+    window.addEventListener("scroll", updateRect, { passive: true });
 
     let isVisible = true;
     const io = new IntersectionObserver(
@@ -306,7 +313,7 @@ export default function Lightfall({
     io.observe(container);
 
     const onPointerMove = (e: PointerEvent) => {
-      const rect = canvas.getBoundingClientRect();
+      const rect = cachedRect || canvas.getBoundingClientRect();
       const scale = renderer.dpr || 1;
       const x = (e.clientX - rect.left) * scale;
       const y = (rect.height - (e.clientY - rect.top)) * scale;
@@ -349,6 +356,7 @@ export default function Lightfall({
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       if (mouseInteraction) canvas.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("scroll", updateRect);
       ro.disconnect();
       io.disconnect();
       if (canvas.parentElement === container) {
