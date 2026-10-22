@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { ArrowRight, Quote } from "lucide-react";
 import { portfolioProjects, getPortfolioProjectBySlug } from "@/content/portfolio";
 import { Container, Section } from "@/components/layout/container";
-import { PageHero } from "@/components/sections/page-hero";
+import { ProjectHero } from "@/components/sections/project-hero";
 import { Reveal } from "@/components/animations/reveal";
 import { Button } from "@/components/ui/button";
 import { FinalCta } from "@/components/sections/final-cta";
@@ -43,13 +43,7 @@ export default async function PortfolioDetailPage({ params }: Props) {
           { name: project.client, url: `${siteConfig.url}/portfolio/${project.slug}` },
         ]}
       />
-      <PageHero badge={project.industry} title={project.client} description={project.summary} />
-
-      <Container className="-mt-4 mb-4">
-        <div className="relative aspect-[21/9] w-full overflow-hidden rounded-[var(--radius-xl)] shadow-[var(--shadow-lg)]">
-          <Image src={project.image} alt={project.client} fill sizes="(min-width: 1024px) 1200px, 100vw" className="object-cover" priority />
-        </div>
-      </Container>
+      <ProjectHero project={project} />
 
       <Section className="pt-0">
         <Container className="grid grid-cols-1 gap-12 lg:grid-cols-3">

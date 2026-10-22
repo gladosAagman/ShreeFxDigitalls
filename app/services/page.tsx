@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { PageHero } from "@/components/sections/page-hero";
+import { ServicesHero } from "@/components/sections/services-hero";
 import { FeaturedService } from "@/components/sections/featured-service";
 import { ServiceCategoriesGrid } from "@/components/sections/service-categories-grid";
 import { ProcessTimeline } from "@/components/sections/process-timeline";
@@ -18,11 +18,7 @@ export const metadata: Metadata = {
 export default function ServicesPage() {
   return (
     <>
-      <PageHero
-        badge="Our Services"
-        title="Digital Solutions That Deliver Measurable Growth"
-        description="A complete range of marketing, automation, creative, and web services — focused on business outcomes."
-      />
+      <ServicesHero />
       <FeaturedService />
       <ServiceCategoriesGrid />
       <ProcessTimeline />

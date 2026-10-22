@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const STAGGER = 0.03;
-const NBSP = " ";
+const NBSP = "\u00A0";
 
 export function TextRoll({
   children,

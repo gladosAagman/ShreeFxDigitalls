@@ -1,5 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
-import { Clock, ArrowRight, BookOpen } from "lucide-react";
+import { Clock, ArrowRight } from "lucide-react";
 import { TiltCard } from "@/components/animations/tilt-card";
 import { SpotlightCard } from "@/components/animations/spotlight-card";
 import { getAccent } from "@/lib/accent";
@@ -17,11 +18,15 @@ export function BlogCard({ post, index = 0 }: { post: BlogPost; index?: number }
         )}
       >
         <Link href={`/blog/${post.slug}`} className="flex h-full flex-col">
-          <div className="relative flex aspect-[16/9] items-center justify-center overflow-hidden bg-[linear-gradient(135deg,color-mix(in_oklab,var(--color-brand-orange)_16%,white),color-mix(in_oklab,var(--color-brand-purple)_16%,white))]">
-            <div className="mesh-gradient-bg absolute inset-0 opacity-70" aria-hidden />
-            <span className="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,var(--color-brand-orange),var(--color-brand-purple))] text-white shadow-[var(--shadow-md)] transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-6">
-              <BookOpen className="h-6 w-6" />
-            </span>
+          <div className="relative aspect-[16/9] overflow-hidden">
+            <Image
+              src={post.image}
+              alt={post.title}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-black/0 to-black/0" aria-hidden />
             <span className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-text shadow-sm">
               {post.category}
             </span>

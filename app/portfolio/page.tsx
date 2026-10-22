@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { PageHero } from "@/components/sections/page-hero";
+import { PortfolioHero } from "@/components/sections/portfolio-hero";
 import { PortfolioGrid } from "@/components/sections/portfolio-grid";
 import { Stats } from "@/components/sections/stats";
 import { TechnologiesUsed } from "@/components/sections/portfolio-tech-results";
@@ -16,11 +16,7 @@ export const metadata: Metadata = {
 export default function PortfolioPage() {
   return (
     <>
-      <PageHero
-        badge="Our Work"
-        title="Results That Speak for Themselves"
-        description="Explore selected projects showcasing marketing campaigns, web development, branding, automation, and business growth."
-      />
+      <PortfolioHero />
       <PortfolioGrid />
       <Stats />
       <TechnologiesUsed />

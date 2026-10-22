@@ -4,7 +4,6 @@ import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
-import { SpecularGlow } from "@/components/effects/specular-glow";
 
 const buttonVariants = cva(
   "cursor-target focus-ring inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-[16px] font-semibold transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]",
@@ -58,15 +57,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
     const innerRef = React.useRef<HTMLButtonElement>(null);
+
+    // Standard buttons render directly without duplicate wrappers
     return (
-      <span className={cn("specular-wrap", className)}>
-        <SpecularGlow targetRef={innerRef} />
-        <Comp
-          className={cn(buttonVariants({ variant, size }), "relative z-[2] w-full")}
-          ref={mergeRefs(ref, innerRef)}
-          {...props}
-        />
-      </span>
+      <Comp
+        className={cn(buttonVariants({ variant, size }), className)}
+        ref={mergeRefs(ref, innerRef)}
+        {...props}
+      />
     );
   }
 );

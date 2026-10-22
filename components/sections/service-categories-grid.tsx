@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { services, serviceCategories } from "@/content/services";
 import { Container, Section, SectionHeader } from "@/components/layout/container";
@@ -9,11 +8,13 @@ import { Icon } from "@/lib/icon-map";
 import { getAccent } from "@/lib/accent";
 import { cn } from "@/lib/utils";
 import ScrollStack, { ScrollStackItem } from "@/components/effects/scroll-stack";
+import { useServiceModal } from "@/components/providers/service-modal-provider";
 
 export function ServiceCategoriesGrid() {
   const [active, setActive] = useState<string>("All");
   const categories = ["All", ...serviceCategories];
   const filtered = active === "All" ? services : services.filter((s) => s.category === active);
+  const { openService } = useServiceModal();
 
   return (
     <Section>
@@ -42,18 +43,17 @@ export function ServiceCategoriesGrid() {
 
         <div className="mt-6">
           <ScrollStack key={active} useWindowScroll className="mx-auto max-w-4xl">
-
             {filtered.map((service, i) => {
               const accent = getAccent(i);
               return (
                 <ScrollStackItem
                   key={service.slug}
                   itemClassName={cn(
-                    "card-liquid overflow-hidden rounded-[var(--radius-xl)] border border-neutral-200 bg-surface shadow-[var(--shadow-lg)]",
+                    "overflow-hidden rounded-[var(--radius-xl)] border border-neutral-200 bg-surface shadow-[var(--shadow-lg)]",
                     accent.glow
                   )}
                 >
-                  <Link href={`/services/${service.slug}`} className="focus-ring group flex h-full flex-col p-8 sm:p-10">
+                  <button onClick={() => openService(service.slug)} className="focus-ring group flex h-full w-full flex-col p-8 sm:p-10 text-left">
                     <span
                       className={cn(
                         "flex h-14 w-14 items-center justify-center rounded-2xl transition-all duration-300 group-hover:-rotate-6 group-hover:scale-110",
@@ -79,7 +79,7 @@ export function ServiceCategoriesGrid() {
                       Learn More
                       <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
                     </span>
-                  </Link>
+                  </button>
                 </ScrollStackItem>
               );
             })}

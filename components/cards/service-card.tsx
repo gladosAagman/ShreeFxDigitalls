@@ -1,21 +1,25 @@
-import Link from "next/link";
+"use client";
+
 import { ArrowRight } from "lucide-react";
 import { Icon } from "@/lib/icon-map";
 import { SpotlightCard } from "@/components/animations/spotlight-card";
 import { getAccent } from "@/lib/accent";
 import { cn } from "@/lib/utils";
 import type { Service } from "@/types/content";
+import { useServiceModal } from "@/components/providers/service-modal-provider";
 
 export function ServiceCard({ service, index = 0 }: { service: Service; index?: number }) {
   const accent = getAccent(index);
+  const { openService } = useServiceModal();
+
   return (
     <SpotlightCard
       className={cn(
-        "grid-glow-border group h-full rounded-[var(--radius-xl)] border border-neutral-200 bg-surface transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[var(--shadow-lg)]",
+        "grid-glow-border group h-full rounded-[var(--radius-xl)] border border-neutral-200 bg-surface transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[var(--shadow-lg)] cursor-pointer text-left",
         accent.glow
       )}
     >
-      <Link href={`/services/${service.slug}`} className="focus-ring flex h-full flex-col p-6">
+      <button onClick={() => openService(service.slug)} className="focus-ring flex h-full w-full flex-col p-6 text-left">
         <span
           className={cn(
             "flex h-12 w-12 items-center justify-center rounded-2xl transition-all duration-300 group-hover:-rotate-6 group-hover:scale-110",
@@ -39,7 +43,7 @@ export function ServiceCard({ service, index = 0 }: { service: Service; index?: 
           Learn More
           <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
         </span>
-      </Link>
+      </button>
     </SpotlightCard>
   );
 }

@@ -67,6 +67,7 @@ export type BlogPost = {
   publishedAt: string;
   readingTime: string;
   content: string[];
+  image: string;
   featured?: boolean;
 };
 
