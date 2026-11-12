@@ -21,16 +21,6 @@ export type VideoCategory = (typeof videoCategories)[number];
 
 export const videoPortfolio: VideoShowcaseItem[] = [
   {
-    id: "video-1",
-    title: "Commercial Film & Visual Production",
-    category: "Brand Commercial",
-    aspectRatio: "landscape",
-    src: "/Videos/IMG_1474.mp4",
-    poster: "/Videos/posters/IMG_1474.jpg",
-    duration: "0:29",
-    description: "Cinematic 16:9 brand storytelling production with high-impact color grade and pacing.",
-  },
-  {
     id: "video-2",
     title: "Social Growth Reel & Hook Cut",
     category: "Reels / Shorts",
@@ -90,5 +80,14 @@ export const videoPortfolio: VideoShowcaseItem[] = [
     duration: "0:36",
     description: "Polished multi-scene video edit built for lead generation campaigns and landing page embeds.",
   },
+  {
+    id: "video-1",
+    title: "Commercial Film & Visual Production",
+    category: "Brand Commercial",
+    aspectRatio: "landscape",
+    src: "/Videos/IMG_1474.mp4",
+    poster: "/Videos/posters/IMG_1474.jpg",
+    duration: "0:29",
+    description: "Cinematic 16:9 brand storytelling production with high-impact color grade and narrative pacing.",
+  },
 ];
-

@@ -62,8 +62,8 @@ export function VideoPortfolioSection() {
           })}
         </div>
 
-        {/* Video Grid */}
-        <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {/* Video Grid: 3-column layout */}
+        <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filteredVideos.map((item) => (
             <VideoCard
               key={item.id}
@@ -115,13 +115,16 @@ export function VideoPortfolioSection() {
 
               <div className="flex max-h-[75vh] items-center justify-center bg-black">
                 <video
+                  key={selectedVideo.src}
                   src={selectedVideo.src}
                   poster={selectedVideo.poster}
                   controls
                   autoPlay
                   playsInline
                   className="max-h-[75vh] w-auto max-w-full rounded-b-xl"
-                />
+                >
+                  <source src={selectedVideo.src} type="video/mp4" />
+                </video>
               </div>
             </div>
           </div>
@@ -161,10 +164,128 @@ function VideoCard({
     onPlayToggle();
   };
 
+  // Landscape / Widescreen Featured Showcase Layout
+  if (item.aspectRatio === "landscape") {
+    return (
+      <div className="group relative sm:col-span-2 lg:col-span-3 flex flex-col md:flex-row overflow-hidden rounded-[var(--radius-xl)] border border-neutral-200 dark:border-neutral-800 bg-surface shadow-sm transition-all duration-300 hover:shadow-xl">
+        {/* 16:9 Video Box */}
+        <div className="relative w-full md:w-3/5 overflow-hidden bg-black aspect-[16/9]">
+          <video
+            ref={videoRef}
+            src={item.src}
+            poster={item.poster}
+            playsInline
+            muted={isMuted}
+            preload="metadata"
+            loop
+            className="h-full w-full object-cover cursor-pointer"
+            onClick={handleToggle}
+          >
+            <source src={item.src} type="video/mp4" />
+          </video>
+
+          {/* Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20 pointer-events-none" />
+
+          {/* Badges */}
+          <div className="absolute left-3 top-3 flex items-center gap-2">
+            <Badge variant="outline" className="border-white/30 bg-black/60 text-xs font-semibold text-white backdrop-blur-sm">
+              {item.category}
+            </Badge>
+            <Badge variant="outline" className="border-brand-orange/40 bg-brand-orange/20 text-xs font-semibold text-brand-orange backdrop-blur-sm">
+              Cinematic 16:9
+            </Badge>
+          </div>
+
+          <div className="absolute right-3 top-3">
+            <span className="rounded-md bg-black/70 px-2 py-0.5 text-xs font-mono font-medium text-white backdrop-blur-sm">
+              {item.duration}
+            </span>
+          </div>
+
+          {/* Big Center Play Button */}
+          {!isPlaying && (
+            <button
+              onClick={handleToggle}
+              className="absolute inset-0 m-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-orange/90 text-white shadow-xl transition-all duration-200 hover:scale-110 hover:bg-brand-orange"
+              aria-label="Play video"
+            >
+              <Play className="ml-1 h-7 w-7 fill-white" />
+            </button>
+          )}
+
+          {/* Floating Controls */}
+          <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white">
+            <button
+              onClick={handleToggle}
+              className="rounded-full bg-black/60 p-2 text-white hover:bg-black/80 backdrop-blur-sm transition-colors"
+              aria-label={isPlaying ? "Pause" : "Play"}
+            >
+              {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+            </button>
+
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => {
+                  if (videoRef.current) {
+                    videoRef.current.muted = !isMuted;
+                    setIsMuted(!isMuted);
+                  }
+                }}
+                className="rounded-full bg-black/60 p-2 text-white hover:bg-black/80 backdrop-blur-sm transition-colors"
+                aria-label={isMuted ? "Unmute" : "Mute"}
+              >
+                {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+              </button>
+              <button
+                onClick={onExpand}
+                className="rounded-full bg-black/60 p-2 text-white hover:bg-black/80 backdrop-blur-sm transition-colors"
+                aria-label="Fullscreen modal"
+              >
+                <Maximize2 className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Info Column */}
+        <div className="flex flex-1 flex-col justify-between p-6 sm:p-8">
+          <div>
+            <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-brand-orange">
+              <Sparkles className="h-3.5 w-3.5" /> Featured Widescreen Film
+            </span>
+            <h3 className="mt-3 text-xl font-bold text-text sm:text-2xl">{item.title}</h3>
+            <p className="mt-3 text-sm leading-relaxed text-text-muted">{item.description}</p>
+
+            <div className="mt-5 flex flex-wrap gap-2">
+              <span className="rounded-lg bg-surface-muted px-3 py-1.5 text-xs font-medium text-text-muted">
+                16:9 Widescreen Master
+              </span>
+              <span className="rounded-lg bg-surface-muted px-3 py-1.5 text-xs font-medium text-text-muted">
+                Pro Color Grading
+              </span>
+              <span className="rounded-lg bg-surface-muted px-3 py-1.5 text-xs font-medium text-text-muted">
+                Cinematic Sound Design
+              </span>
+            </div>
+          </div>
+
+          <div className="mt-6 flex items-center justify-between border-t border-neutral-200 dark:border-neutral-800 pt-4">
+            <span className="text-xs font-medium text-text-muted">Commercial Showcase</span>
+            <Button size="sm" variant="secondary" onClick={onExpand}>
+              Watch Fullscreen <Maximize2 className="ml-1.5 h-3.5 w-3.5" />
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Portrait 9:16 Vertical Reels Layout
   return (
     <div className="group relative flex flex-col overflow-hidden rounded-[var(--radius-xl)] border border-neutral-200 dark:border-neutral-800 bg-surface shadow-sm transition-all duration-300 hover:shadow-lg">
       {/* Video Container */}
-      <div className={`relative w-full overflow-hidden bg-black ${item.aspectRatio === "portrait" ? "aspect-[9/16]" : "aspect-[16/9]"}`}>
+      <div className="relative w-full overflow-hidden bg-black aspect-[9/16]">
         <video
           ref={videoRef}
           src={item.src}
@@ -173,7 +294,7 @@ function VideoCard({
           muted={isMuted}
           preload="metadata"
           loop
-          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 cursor-pointer"
           onClick={handleToggle}
         >
           <source src={item.src} type="video/mp4" />
@@ -210,7 +331,7 @@ function VideoCard({
         <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white">
           <button
             onClick={handleToggle}
-            className="rounded-full bg-black/60 p-2 text-white hover:bg-black/80 backdrop-blur-sm"
+            className="rounded-full bg-black/60 p-2 text-white hover:bg-black/80 backdrop-blur-sm transition-colors"
             aria-label={isPlaying ? "Pause" : "Play"}
           >
             {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
@@ -224,14 +345,14 @@ function VideoCard({
                   setIsMuted(!isMuted);
                 }
               }}
-              className="rounded-full bg-black/60 p-2 text-white hover:bg-black/80 backdrop-blur-sm"
+              className="rounded-full bg-black/60 p-2 text-white hover:bg-black/80 backdrop-blur-sm transition-colors"
               aria-label={isMuted ? "Unmute" : "Mute"}
             >
               {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
             </button>
             <button
               onClick={onExpand}
-              className="rounded-full bg-black/60 p-2 text-white hover:bg-black/80 backdrop-blur-sm"
+              className="rounded-full bg-black/60 p-2 text-white hover:bg-black/80 backdrop-blur-sm transition-colors"
               aria-label="Fullscreen modal"
             >
               <Maximize2 className="h-4 w-4" />
@@ -241,13 +362,12 @@ function VideoCard({
       </div>
 
       {/* Info Card */}
-      <div className="flex flex-1 flex-col justify-between p-4">
+      <div className="flex flex-1 flex-col justify-between p-4 border-t border-neutral-200 dark:border-neutral-800">
         <div>
-          <h4 className="font-bold text-text line-clamp-1">{item.title}</h4>
+          <h4 className="font-bold text-sm text-text line-clamp-1">{item.title}</h4>
           <p className="mt-1 text-xs text-text-muted line-clamp-2">{item.description}</p>
         </div>
       </div>
     </div>
   );
 }
-
