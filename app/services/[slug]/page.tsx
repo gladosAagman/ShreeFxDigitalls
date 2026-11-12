@@ -57,7 +57,7 @@ export default async function ServiceDetailPage({ params }: Props) {
               <h2 className="mt-6 text-2xl font-bold text-text">Overview</h2>
               <p className="mt-3 text-[16px] leading-relaxed text-text-muted">{service.description}</p>
 
-              {service.slug === "whatsapp-business-api" && (
+              {(service.slug === "whatsapp-business-api" || service.slug === "ai-automation" || service.slug === "ai-chatbots") && (
                 <div className="mt-8 overflow-hidden rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-950 p-4 sm:p-6 shadow-xl">
                   <div className="flex items-center justify-between pb-4 border-b border-neutral-800">
                     <div className="flex items-center gap-2">

@@ -35,6 +35,39 @@ export const services: Service[] = [
     featured: true,
   },
   {
+    slug: "ai-automation",
+    category: "Business Automation",
+    icon: "Bot",
+    name: "AI & Business Automation",
+    summary: "Intelligent AI workflows, WhatsApp automated chatbots, and smart lead qualification.",
+    description:
+      "Transform your customer communication with end-to-end AI automation. We integrate official Meta-verified WhatsApp Business API, intelligent conversational AI agents, and CRM sync to capture, qualify, and convert leads 24/7 without manual effort.",
+    benefits: [
+      "Official WhatsApp API & AI Chatbot Integration",
+      "Instant 24/7 Automated Customer Support & Lead Capture",
+      "Bulk Broadcasts & Personalized AI Nurture Sequences",
+      "Seamless CRM & Multi-Agent Inbox Sync",
+    ],
+    deliverables: [
+      "WhatsApp Business API Cloud Portal Setup",
+      "Custom AI Chatbot & Qualification Logic",
+      "Broadcast Automation & Campaign Workflows",
+      "Live Analytics & Conversation Dashboard",
+    ],
+    process: ["Discovery", "Strategy", "Execution", "Optimization", "Reporting"],
+    faqs: [
+      {
+        question: "How does AI Automation work with WhatsApp?",
+        answer: "We connect conversational AI directly to your official WhatsApp Business API so customer inquiries get answered instantly, qualified automatically, and booked into your CRM.",
+      },
+      {
+        question: "Can human agents take over the conversation anytime?",
+        answer: "Yes, our smart multi-agent dashboard allows team members to step in and take over any chat with one click.",
+      },
+    ],
+    featured: true,
+  },
+  {
     slug: "meta-ads",
     category: "Digital Marketing",
     icon: "Megaphone",
