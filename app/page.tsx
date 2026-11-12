@@ -6,6 +6,7 @@ import { ProcessTimeline } from "@/components/sections/process-timeline";
 import { Industries } from "@/components/sections/industries";
 import { PortfolioHighlights } from "@/components/sections/portfolio-highlights";
 import { FeaturedPlansSection } from "@/components/sections/featured-plans";
+import { FeaturedService } from "@/components/sections/featured-service";
 import { Stats } from "@/components/sections/stats";
 import { TestimonialsSection } from "@/components/sections/testimonials-section";
 import { FaqSection } from "@/components/sections/faq-section";
@@ -27,6 +28,7 @@ export default function HomePage() {
       <ProcessTimeline />
       <Industries />
       <FeaturedPlansSection />
+      <FeaturedService />
       <PortfolioHighlights />
       <Stats />
       <TestimonialsSection />

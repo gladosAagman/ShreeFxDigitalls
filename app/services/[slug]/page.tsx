@@ -57,6 +57,35 @@ export default async function ServiceDetailPage({ params }: Props) {
               <h2 className="mt-6 text-2xl font-bold text-text">Overview</h2>
               <p className="mt-3 text-[16px] leading-relaxed text-text-muted">{service.description}</p>
 
+              {service.slug === "whatsapp-business-api" && (
+                <div className="mt-8 overflow-hidden rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-950 p-4 sm:p-6 shadow-xl">
+                  <div className="flex items-center justify-between pb-4 border-b border-neutral-800">
+                    <div className="flex items-center gap-2">
+                      <span className="flex h-3 w-3 rounded-full bg-red-500/80" />
+                      <span className="flex h-3 w-3 rounded-full bg-yellow-500/80" />
+                      <span className="flex h-3 w-3 rounded-full bg-green-500/80" />
+                      <span className="ml-2 font-mono text-xs text-neutral-400">
+                        WhatsApp API Cloud Dashboard Demo
+                      </span>
+                    </div>
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#25D366]/10 px-2.5 py-0.5 text-xs font-semibold text-[#25D366]">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[#25D366] animate-pulse" />
+                      Live Walkthrough
+                    </span>
+                  </div>
+                  <div className="mt-4 overflow-hidden rounded-xl bg-black">
+                    <video
+                      src="/Videos/WhatsappApiDashboard.mp4"
+                      poster="/Videos/posters/WhatsappApiDashboard.jpg"
+                      controls
+                      playsInline
+                      preload="metadata"
+                      className="w-full aspect-[800/576] object-contain"
+                    />
+                  </div>
+                </div>
+              )}
+
               <h2 className="mt-10 text-2xl font-bold text-text">Key Benefits</h2>
               <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
                 {service.benefits.map((benefit) => (
