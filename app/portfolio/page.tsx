@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PortfolioHero } from "@/components/sections/portfolio-hero";
 import { PortfolioGrid } from "@/components/sections/portfolio-grid";
+import { VideoPortfolioSection } from "@/components/sections/video-portfolio";
 import { Stats } from "@/components/sections/stats";
 import { TechnologiesUsed } from "@/components/sections/portfolio-tech-results";
 import { TestimonialsSection } from "@/components/sections/testimonials-section";
@@ -17,6 +18,7 @@ export default function PortfolioPage() {
   return (
     <>
       <PortfolioHero />
+      <VideoPortfolioSection />
       <PortfolioGrid />
       <Stats />
       <TechnologiesUsed />

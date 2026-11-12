@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ServicesHero } from "@/components/sections/services-hero";
 import { FeaturedService } from "@/components/sections/featured-service";
 import { ServiceCategoriesGrid } from "@/components/sections/service-categories-grid";
+import { FeaturedPlansSection } from "@/components/sections/featured-plans";
 import { ProcessTimeline } from "@/components/sections/process-timeline";
 import { WhyChooseUs } from "@/components/sections/why-choose-us";
 import { PortfolioHighlights } from "@/components/sections/portfolio-highlights";
@@ -21,6 +22,7 @@ export default function ServicesPage() {
       <ServicesHero />
       <FeaturedService />
       <ServiceCategoriesGrid />
+      <FeaturedPlansSection />
       <ProcessTimeline />
       <WhyChooseUs />
       <PortfolioHighlights />
