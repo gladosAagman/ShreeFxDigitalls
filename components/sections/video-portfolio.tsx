@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Play, Pause, Volume2, VolumeX, Maximize2, Sparkles, Film } from "lucide-react";
 import { Container, Section } from "@/components/layout/container";
 import { Badge } from "@/components/ui/badge";
@@ -145,15 +145,20 @@ function VideoCard({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isMuted, setIsMuted] = useState(true);
 
-  const handleToggle = () => {
+  useEffect(() => {
     if (!videoRef.current) return;
     if (isPlaying) {
-      videoRef.current.pause();
-      onPlayToggle();
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {});
+      }
     } else {
-      videoRef.current.play();
-      onPlayToggle();
+      videoRef.current.pause();
     }
+  }, [isPlaying]);
+
+  const handleToggle = () => {
+    onPlayToggle();
   };
 
   return (
@@ -166,10 +171,13 @@ function VideoCard({
           poster={item.poster}
           playsInline
           muted={isMuted}
+          preload="metadata"
           loop
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
           onClick={handleToggle}
-        />
+        >
+          <source src={item.src} type="video/mp4" />
+        </video>
 
         {/* Overlay Controls */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20 pointer-events-none" />
