@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { Handshake } from "lucide-react";
+import { Handshake, ShieldCheck } from "lucide-react";
 import { PageHero } from "@/components/sections/page-hero";
 import { Container, Section, SectionHeader } from "@/components/layout/container";
 import { StaggerContainer, StaggerItem } from "@/components/animations/reveal";
@@ -9,8 +9,8 @@ import { getAccent } from "@/lib/accent";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Partners",
-  description: "Meet the companies ShreeFX Digitals partners with to deliver growth for our clients.",
+  title: "Partners & Clients",
+  description: "Meet the strategic industry partners and trusted clients ShreeFX Digitals collaborates with to deliver measurable growth.",
   alternates: { canonical: "/partners" },
 };
 
@@ -32,14 +32,79 @@ const partners = [
   },
 ];
 
+const trustedClients = [
+  {
+    name: "Advanced Dental Jabalpur",
+    category: "Dental & Healthcare",
+    logo: "/images/Clients/AdvancedDentalJabalpur.jpeg",
+    bgColor: "#ffffff",
+  },
+  {
+    name: "BuildBest Construction",
+    category: "Construction & Engineering",
+    logo: "/images/Clients/BuildBestConstruction.jpeg",
+    bgColor: "#0e2944",
+  },
+  {
+    name: "Dharmendra Electronics",
+    category: "Retail & Consumer Tech",
+    logo: "/images/Clients/Dharmendra Electronics.jpeg",
+    bgColor: "#e1e0de",
+  },
+  {
+    name: "JWC",
+    category: "Enterprise & Consulting",
+    logo: "/images/Clients/JWC.jpeg",
+    bgColor: "#c9ccd5",
+  },
+  {
+    name: "Pitambara Physiotherapy",
+    category: "Physical Rehab & Wellness",
+    logo: "/images/Clients/Pitambara Physiotherapy.jpeg",
+    bgColor: "#000000",
+  },
+  {
+    name: "Sheetal Jyoti",
+    category: "Hospitality & Celebrations",
+    logo: "/images/Clients/SheetalJyoti.jpeg",
+    bgColor: "#000000",
+  },
+  {
+    name: "Visa Alliance",
+    category: "Immigration & Global Visas",
+    logo: "/images/Clients/VisaAlliance.jpeg",
+    bgColor: "#000000",
+  },
+  {
+    name: "Wash Wale Services",
+    category: "Facility & Laundry Tech",
+    logo: "/images/Clients/Wash wale services.jpeg",
+    bgColor: "#001a3d",
+  },
+  {
+    name: "The Gut Sutra",
+    category: "Holistic Health & Nutrition",
+    logo: "/images/Clients/the gut sutra.jpeg",
+    bgColor: "#fdfef8",
+  },
+  {
+    name: "Vidhya Dham",
+    category: "Education & Academy",
+    logo: "/images/Clients/vidhya dham.jpeg",
+    bgColor: "#fefefe",
+  },
+];
+
 export default function PartnersPage() {
   return (
     <>
       <PageHero
-        badge="Our Partners"
-        title="Companies We Partner With"
-        description="We work closely with trusted organizations to deliver measurable growth and technology outcomes for our clients."
+        badge="Partners & Clients"
+        title="Partners & Trusted Clients"
+        description="We work closely with strategic organizations and trusted businesses to deliver measurable growth and modern digital outcomes."
       />
+
+      {/* Strategic Partners Section */}
       <Section>
         <Container>
           <SectionHeader badge="Partners" title="Trusted Partnerships" />
@@ -120,6 +185,53 @@ export default function PartnersPage() {
               );
             })}
           </StaggerContainer>
+        </Container>
+      </Section>
+
+      {/* Trusted Clients Section */}
+      <Section className="border-t border-neutral-200/60 dark:border-neutral-800/80 bg-surface-muted/30">
+        <Container>
+          <SectionHeader
+            badge="Our Clients"
+            title="Trusted Clients"
+            description="Businesses, healthcare practices, and institutions powered by ShreeFX Digitals across performance marketing, branding, and digital growth."
+          />
+
+          <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 sm:gap-6">
+            {trustedClients.map((client) => (
+              <div
+                key={client.name}
+                className="group flex flex-col overflow-hidden rounded-[var(--radius-xl)] border border-neutral-200 dark:border-neutral-800 bg-surface p-4 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-brand-orange/40 hover:shadow-lg"
+              >
+                <div
+                  className="relative aspect-square w-full overflow-hidden rounded-xl p-2 transition-transform duration-300 group-hover:scale-[1.03]"
+                  style={{ backgroundColor: client.bgColor }}
+                >
+                  <Image
+                    src={client.logo}
+                    alt={client.name}
+                    fill
+                    sizes="(min-width: 1024px) 20vw, (min-width: 640px) 33vw, 50vw"
+                    className="object-contain p-2"
+                  />
+                </div>
+                <div className="mt-3.5 flex flex-1 flex-col justify-between">
+                  <div>
+                    <h3 className="text-sm font-bold text-text transition-colors group-hover:text-brand-orange leading-snug line-clamp-1">
+                      {client.name}
+                    </h3>
+                    <p className="mt-1 text-xs text-text-muted line-clamp-1">
+                      {client.category}
+                    </p>
+                  </div>
+                  <span className="mt-3 inline-flex items-center gap-1 text-[11px] font-semibold text-brand-orange">
+                    <ShieldCheck className="h-3 w-3" />
+                    Verified Client
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
         </Container>
       </Section>
     </>
