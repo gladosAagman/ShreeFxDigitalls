@@ -15,7 +15,7 @@ export function ServiceCard({ service, index = 0 }: { service: Service; index?: 
   return (
     <SpotlightCard
       className={cn(
-        "grid-glow-border group h-full rounded-[var(--radius-xl)] border border-neutral-200 bg-surface transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[var(--shadow-lg)] cursor-pointer text-left",
+        "grid-glow-border group h-full rounded-[var(--radius-xl)] border border-neutral-200 dark:border-neutral-800 bg-surface dark:bg-neutral-900/95 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[var(--shadow-lg)] cursor-pointer text-left",
         accent.glow
       )}
     >

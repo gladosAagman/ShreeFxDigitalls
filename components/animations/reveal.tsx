@@ -3,28 +3,28 @@
 import { motion, type Variants } from "framer-motion";
 import type { ReactNode } from "react";
 
-const springTransition = { type: "spring" as const, stiffness: 280, damping: 24, mass: 0.8 };
+const smoothTransition = { duration: 0.45, ease: [0.22, 1, 0.36, 1] as const };
 
 const variantsMap: Record<string, Variants> = {
   fadeIn: {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: 0.4 } },
+    visible: { opacity: 1, transition: { duration: 0.35 } },
   },
   slideUp: {
-    hidden: { opacity: 0, y: 28 },
-    visible: { opacity: 1, y: 0, transition: springTransition },
+    hidden: { opacity: 0, y: 16 },
+    visible: { opacity: 1, y: 0, transition: smoothTransition },
   },
   slideLeft: {
-    hidden: { opacity: 0, x: 28 },
-    visible: { opacity: 1, x: 0, transition: springTransition },
+    hidden: { opacity: 0, x: 16 },
+    visible: { opacity: 1, x: 0, transition: smoothTransition },
   },
   slideRight: {
-    hidden: { opacity: 0, x: -28 },
-    visible: { opacity: 1, x: 0, transition: springTransition },
+    hidden: { opacity: 0, x: -16 },
+    visible: { opacity: 1, x: 0, transition: smoothTransition },
   },
   scaleIn: {
-    hidden: { opacity: 0, scale: 0.95 },
-    visible: { opacity: 1, scale: 1, transition: springTransition },
+    hidden: { opacity: 0, scale: 0.96 },
+    visible: { opacity: 1, scale: 1, transition: smoothTransition },
   },
 };
 

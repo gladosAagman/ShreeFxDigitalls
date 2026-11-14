@@ -34,7 +34,8 @@ export function Hero() {
 
   return (
     <section className="relative overflow-hidden pt-36 pb-20 md:pt-44 md:pb-28">
-      <div className={cn("pointer-events-none absolute inset-0", theme === "dark" ? "opacity-55" : "opacity-[0.16]")} aria-hidden>
+      {/* Desktop WebGL Lightfall */}
+      <div className={cn("pointer-events-none absolute inset-0 hidden md:block", theme === "dark" ? "opacity-55" : "opacity-[0.16]")} aria-hidden>
         <Lightfall
           colors={["#F18029", "#F1A519", "#F2B048"]}
           backgroundColor="#7A3300"
@@ -54,6 +55,12 @@ export function Hero() {
           mouseDampening={0.2}
         />
       </div>
+
+      {/* Mobile Ambient Glow (High-performance CSS replacement for WebGL) */}
+      <div
+        className="pointer-events-none absolute inset-0 md:hidden bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,rgba(241,128,41,0.22),transparent_70%)]"
+        aria-hidden
+      />
       
       <Container className="relative grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
         <div>
@@ -218,7 +225,7 @@ export function Hero() {
             initial="hidden"
             animate="visible"
             variants={dashboardCardVariants}
-            className="glass-panel animate-float absolute -bottom-8 right-4 w-60 rounded-[var(--radius-lg)] p-5 shadow-[var(--shadow-md)]"
+            className="glass-panel animate-float absolute bottom-2 right-4 w-60 rounded-[var(--radius-lg)] p-5 shadow-[var(--shadow-md)]"
           >
             <div className="flex items-center gap-3">
               <span className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-orange/10 text-brand-orange">

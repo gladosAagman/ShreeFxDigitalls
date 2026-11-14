@@ -35,12 +35,12 @@ export function ProcessTimeline() {
               <motion.div
                 key={item.step}
                 variants={{
-                  hidden: { opacity: 0, y: 30, scale: 0.85 },
+                  hidden: { opacity: 0, y: 16, scale: 0.95 },
                   visible: {
                     opacity: 1,
                     y: 0,
                     scale: 1,
-                    transition: { type: "spring", stiffness: 260, damping: 18 },
+                    transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] },
                   },
                 }}
                 className="group relative flex flex-col items-start gap-3 md:items-center md:text-center"

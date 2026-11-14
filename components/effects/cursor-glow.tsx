@@ -6,6 +6,9 @@ export function CursorGlow() {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (typeof window === "undefined" || window.matchMedia("(hover: none), (pointer: coarse), (max-width: 1024px)").matches) {
+      return;
+    }
     const el = ref.current;
     if (!el) return;
 

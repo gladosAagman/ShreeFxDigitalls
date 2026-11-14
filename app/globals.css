@@ -430,7 +430,7 @@ body {
   will-change: transform, opacity;
 }
 
-@media (hover: none) and (pointer: coarse) {
+@media (max-width: 768px), (hover: none), (pointer: coarse) {
   .glass-panel,
   .card-liquid::after,
   .liquid-glass,
@@ -441,13 +441,22 @@ body {
 
   .dark .glass-panel,
   .dark .card-liquid::after {
-    transform: none;
+    transform: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
   }
 
-  .liquid-particles span {
-    animation: none;
-    opacity: var(--peak);
-    will-change: auto;
+  .card-liquid {
+    isolation: auto !important;
+  }
+
+  .liquid-particles {
+    display: none !important;
+  }
+
+  .animate-float,
+  .animate-float-slow {
+    animation: none !important;
   }
 }
 

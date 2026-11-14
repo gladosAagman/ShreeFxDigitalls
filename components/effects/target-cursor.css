@@ -10,6 +10,14 @@
   transform: translate(-50%, -50%);
 }
 
+@media (max-width: 768px), (hover: none), (pointer: coarse) {
+  .target-cursor-wrapper {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+}
+
 .target-cursor-dot {
   position: absolute;
   left: 50%;
