@@ -21,6 +21,11 @@ export function OrganizationJsonLd() {
       addressLocality: siteConfig.address,
       addressCountry: "IN",
     },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: 23.1999168,
+      longitude: 79.9264755,
+    },
     hasMap: siteConfig.googleMapsUrl,
   };
 

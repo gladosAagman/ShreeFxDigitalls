@@ -86,7 +86,7 @@ export function ConsultationFormSection() {
             <div className="relative overflow-hidden rounded-[var(--radius-xl)] border border-neutral-200 dark:border-neutral-800 bg-surface shadow-sm">
               <iframe
                 title="ShreeFX Digitals location map"
-                src={`https://www.google.com/maps?q=${encodeURIComponent(siteConfig.address)}&output=embed`}
+                src={siteConfig.googleMapsEmbedUrl}
                 className="h-64 w-full border-0"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
