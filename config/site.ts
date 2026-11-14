@@ -17,7 +17,7 @@ export const siteConfig = {
     "branding agency",
     "CRM automation",
   ],
-  email: "hello@shreefxdigitals.com",
+  email: "shreefxdigital@gmail.com",
   phone: "+91 93407 48274",
   phoneDisplay: "+91 93407 48274",
   whatsappNumber: "918815439533",
