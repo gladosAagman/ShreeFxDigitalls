@@ -25,7 +25,7 @@ export const siteConfig = {
   ],
   phone: "+91 93407 48274",
   phoneDisplay: "+91 93407 48274",
-  whatsappNumber: "918815439533",
+  whatsappNumber: "919340748274",
   address: "Jabalpur, Madhya Pradesh, India",
   googleMapsUrl: "https://maps.app.goo.gl/kxZrwWW1Amb1sfKu7",
   businessHours: "Mon - Sat, 10:00 AM - 7:00 PM IST",

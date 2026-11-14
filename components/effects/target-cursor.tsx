@@ -63,21 +63,16 @@ export default function TargetCursor({
   const targetCornerPositionsRef = useRef<{ x: number; y: number }[] | null>(null);
   const tickerFnRef = useRef<(() => void) | null>(null);
   const activeStrengthRef = useRef(0);
-  const [mounted, setMounted] = useState(false);
+  const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const isMobile = useMemo(() => {
-    if (typeof window === "undefined") return true;
-    const hasTouchScreen = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-    const isSmallScreen = window.innerWidth <= 1024;
-    const hasHover = window.matchMedia("(hover: hover)").matches;
-    const userAgent = navigator.userAgent || navigator.vendor || "";
-    const mobileRegex = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i;
-    const isMobileUserAgent = mobileRegex.test(userAgent.toLowerCase());
-    return !hasHover || (hasTouchScreen && isSmallScreen) || isMobileUserAgent;
+    if (typeof window === "undefined") return;
+    const userAgent = (navigator.userAgent || navigator.vendor || "").toLowerCase();
+    const isMobileUA = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
+    const isSmallScreen = window.innerWidth < 768;
+    if (!isMobileUA && !isSmallScreen) {
+      setEnabled(true);
+    }
   }, []);
 
   const constants = useMemo(
@@ -100,7 +95,7 @@ export default function TargetCursor({
   }, []);
 
   useEffect(() => {
-    if (isMobile || !cursorRef.current) return;
+    if (!enabled || !cursorRef.current) return;
 
     const originalCursor = document.body.style.cursor;
     if (hideDefaultCursor) {
@@ -406,19 +401,19 @@ export default function TargetCursor({
       targetCornerPositionsRef.current = null;
       activeStrengthRef.current = 0;
     };
-  }, [targetSelector, spinDuration, moveCursor, constants, hideDefaultCursor, isMobile, hoverDuration, parallaxOn, cursorColor, cursorColorOnTarget]);
+  }, [enabled, targetSelector, spinDuration, moveCursor, constants, hideDefaultCursor, hoverDuration, parallaxOn, cursorColor, cursorColorOnTarget]);
 
   useEffect(() => {
-    if (isMobile || !cursorRef.current || !spinTl.current) return;
+    if (!enabled || !cursorRef.current || !spinTl.current) return;
     if (spinTl.current.isActive()) {
       spinTl.current.kill();
       spinTl.current = gsap
         .timeline({ repeat: -1 })
         .to(cursorRef.current, { rotation: "+=360", duration: spinDuration, ease: "none" });
     }
-  }, [spinDuration, isMobile]);
+  }, [spinDuration, enabled]);
 
-  if (!mounted || isMobile) {
+  if (!enabled) {
     return null;
   }
 
