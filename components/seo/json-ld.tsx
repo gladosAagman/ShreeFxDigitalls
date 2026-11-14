@@ -9,13 +9,13 @@ export function OrganizationJsonLd() {
     logo: `${siteConfig.url}/logo.png`,
     description: siteConfig.description,
     foundingDate: siteConfig.foundingYear,
-    contactPoint: {
+    contactPoint: siteConfig.phoneNumbers.map((phone) => ({
       "@type": "ContactPoint",
-      telephone: siteConfig.phone,
+      telephone: phone.raw,
       email: siteConfig.email,
       contactType: "customer service",
       areaServed: "IN",
-    },
+    })),
     address: {
       "@type": "PostalAddress",
       addressLocality: siteConfig.address,

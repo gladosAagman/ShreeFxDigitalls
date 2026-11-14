@@ -18,6 +18,11 @@ export const siteConfig = {
     "CRM automation",
   ],
   email: "shreefxdigital@gmail.com",
+  phoneNumbers: [
+    { display: "+91 93407 48274", raw: "+919340748274" },
+    { display: "+91 88154 39533", raw: "+918815439533" },
+    { display: "+91 92034 82201", raw: "+919203482201" },
+  ],
   phone: "+91 93407 48274",
   phoneDisplay: "+91 93407 48274",
   whatsappNumber: "918815439533",

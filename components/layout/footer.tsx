@@ -89,11 +89,13 @@ export function Footer() {
                   <Mail className="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:scale-110" /> {siteConfig.email}
                 </a>
               </li>
-              <li>
-                <a href={`tel:${siteConfig.phone.replace(/\s/g, "")}`} className="group flex items-center gap-2 transition-colors hover:text-brand-orange">
-                  <Phone className="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:scale-110" /> {siteConfig.phoneDisplay}
-                </a>
-              </li>
+              {siteConfig.phoneNumbers.map((phone) => (
+                <li key={phone.raw}>
+                  <a href={`tel:${phone.raw}`} className="group flex items-center gap-2 transition-colors hover:text-brand-orange">
+                    <Phone className="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:scale-110" /> {phone.display}
+                  </a>
+                </li>
+              ))}
               <li>
                 <a
                   href={siteConfig.googleMapsUrl}

@@ -5,7 +5,11 @@ import { ConsultationForm } from "@/components/forms/consultation-form";
 import { siteConfig, whatsappLink, mailtoLink } from "@/config/site";
 
 const contactMethods = [
-  { icon: Phone, label: "Phone", value: siteConfig.phoneDisplay, href: `tel:${siteConfig.phone.replace(/\s/g, "")}` },
+  {
+    icon: Phone,
+    label: "Phone Support",
+    phones: siteConfig.phoneNumbers,
+  },
   { icon: Mail, label: "Email", value: siteConfig.email, href: mailtoLink() },
   { icon: MessageCircle, label: "WhatsApp", value: "Chat Instantly", href: whatsappLink("Hi ShreeFX Digitals, I'd like to get in touch.") },
   { icon: MapPin, label: "Office", value: siteConfig.address, href: siteConfig.googleMapsUrl },
@@ -17,19 +21,34 @@ export function ContactMethods() {
       <Container>
         <StaggerContainer className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {contactMethods.map((method) => {
+            const isPhoneCard = "phones" in method && Boolean(method.phones);
             const content = (
-              <div className="card-liquid h-full rounded-[var(--radius-xl)] border border-neutral-200 bg-surface p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-md)]">
+              <div className="card-liquid h-full rounded-[var(--radius-xl)] border border-neutral-200 dark:border-neutral-800 bg-surface p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-md)]">
                 <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-orange/10 text-brand-orange">
                   <method.icon className="h-5 w-5" />
                 </span>
                 <p className="mt-4 text-sm font-medium text-text-muted">{method.label}</p>
-                <p className="mt-1 text-[15px] font-semibold text-text">{method.value}</p>
+                {isPhoneCard && method.phones ? (
+                  <div className="mt-2 flex flex-col gap-1">
+                    {method.phones.map((p) => (
+                      <a
+                        key={p.raw}
+                        href={`tel:${p.raw}`}
+                        className="text-[13.5px] font-semibold text-text transition-colors hover:text-brand-orange"
+                      >
+                        {p.display}
+                      </a>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="mt-1 text-[15px] font-semibold text-text truncate">{"value" in method ? method.value : ""}</p>
+                )}
               </div>
             );
             return (
               <StaggerItem key={method.label}>
-                {method.href ? (
-                  <a href={method.href} target={method.href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" className="focus-ring block">
+                {!isPhoneCard && "href" in method && method.href ? (
+                  <a href={method.href} target={method.href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" className="focus-ring block h-full">
                     {content}
                   </a>
                 ) : (
