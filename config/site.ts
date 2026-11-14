@@ -21,7 +21,7 @@ export const siteConfig = {
   phone: "+91 93407 48274",
   phoneDisplay: "+91 93407 48274",
   whatsappNumber: "918815439533",
-  address: "Ahmedabad, Gujarat, India",
+  address: "Jabalpur, Madhya Pradesh, India",
   businessHours: "Mon - Sat, 10:00 AM - 7:00 PM IST",
   foundingYear: "2022",
 } as const;

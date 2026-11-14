@@ -67,7 +67,7 @@ export function ConsultationFormSection() {
             <div className="overflow-hidden rounded-[var(--radius-xl)] border border-neutral-200">
               <iframe
                 title="ShreeFX Digitals location map"
-                src="https://www.google.com/maps?q=Ahmedabad%2C+Gujarat%2C+India&output=embed"
+                src={`https://www.google.com/maps?q=${encodeURIComponent(siteConfig.address)}&output=embed`}
                 className="h-64 w-full border-0"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
