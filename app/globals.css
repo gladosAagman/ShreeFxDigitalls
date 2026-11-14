@@ -430,6 +430,27 @@ body {
   will-change: transform, opacity;
 }
 
+@media (hover: none) and (pointer: coarse) {
+  .glass-panel,
+  .card-liquid::after,
+  .liquid-glass,
+  [class*="backdrop-blur-"] {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  .dark .glass-panel,
+  .dark .card-liquid::after {
+    transform: none;
+  }
+
+  .liquid-particles span {
+    animation: none;
+    opacity: var(--peak);
+    will-change: auto;
+  }
+}
+
 .dark .liquid-particles span {
   --peak: 0.6;
 }

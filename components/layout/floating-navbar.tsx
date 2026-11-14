@@ -27,7 +27,7 @@ export interface FloatingNavbarProps {
 export function FloatingNavbar({ left, center, right, className }: FloatingNavbarProps) {
   const { scrollY } = useScroll();
   const maxWidth = useTransform(scrollY, [0, 200], [1280, 780]);
-  const y = useTransform(scrollY, [0, 50, 200], [0, 20, 24]);
+  const y = useTransform(scrollY, [0, 50, 200], [16, 36, 40]);
   const barHeight = useTransform(scrollY, [0, 200], [84, 60]);
   const paddingInline = useTransform(scrollY, [0, 200], [24, 16]);
   const borderRadius = useTransform(scrollY, [0, 200], [0, 9999]);

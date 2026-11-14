@@ -58,7 +58,7 @@ export function FeaturedService() {
               <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-white sm:text-4xl lg:text-5xl">
                 WhatsApp Business API Dashboard
               </h2>
-              <p className="mt-4 text-base leading-relaxed text-neutral-300 sm:text-lg">
+              <p className="mt-4 text-base leading-relaxed text-white/80 sm:text-lg">
                 Automate customer replies, broadcast promotions to 10,000+ contacts, capture leads directly, and manage all chats from one centralized dashboard.
               </p>
             </div>
@@ -151,7 +151,7 @@ export function FeaturedService() {
               {service.benefits.map((benefit) => (
                 <div
                   key={benefit}
-                  className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-neutral-200 backdrop-blur-sm"
+                  className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-white/85"
                 >
                   <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#25D366]" />
                   <span>{benefit}</span>
