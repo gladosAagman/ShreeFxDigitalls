@@ -22,6 +22,7 @@ export const siteConfig = {
   phoneDisplay: "+91 93407 48274",
   whatsappNumber: "918815439533",
   address: "Jabalpur, Madhya Pradesh, India",
+  googleMapsUrl: "https://maps.app.goo.gl/kxZrwWW1Amb1sfKu7",
   businessHours: "Mon - Sat, 10:00 AM - 7:00 PM IST",
   foundingYear: "2022",
 } as const;

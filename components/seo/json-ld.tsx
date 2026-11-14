@@ -21,6 +21,7 @@ export function OrganizationJsonLd() {
       addressLocality: siteConfig.address,
       addressCountry: "IN",
     },
+    hasMap: siteConfig.googleMapsUrl,
   };
 
   return (

@@ -8,7 +8,7 @@ const contactMethods = [
   { icon: Phone, label: "Phone", value: siteConfig.phoneDisplay, href: `tel:${siteConfig.phone.replace(/\s/g, "")}` },
   { icon: Mail, label: "Email", value: siteConfig.email, href: mailtoLink() },
   { icon: MessageCircle, label: "WhatsApp", value: "Chat Instantly", href: whatsappLink("Hi ShreeFX Digitals, I'd like to get in touch.") },
-  { icon: MapPin, label: "Office", value: siteConfig.address, href: undefined },
+  { icon: MapPin, label: "Office", value: siteConfig.address, href: siteConfig.googleMapsUrl },
 ];
 
 export function ContactMethods() {
@@ -64,7 +64,7 @@ export function ConsultationFormSection() {
             </div>
           </Reveal>
           <Reveal variant="slideLeft" delay={0.1}>
-            <div className="overflow-hidden rounded-[var(--radius-xl)] border border-neutral-200">
+            <div className="relative overflow-hidden rounded-[var(--radius-xl)] border border-neutral-200 dark:border-neutral-800 bg-surface shadow-sm">
               <iframe
                 title="ShreeFX Digitals location map"
                 src={`https://www.google.com/maps?q=${encodeURIComponent(siteConfig.address)}&output=embed`}
@@ -72,6 +72,20 @@ export function ConsultationFormSection() {
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               />
+              <div className="border-t border-neutral-200 dark:border-neutral-800 bg-surface p-3 flex items-center justify-between">
+                <div className="flex items-center gap-1.5 text-xs text-text-muted truncate mr-2">
+                  <MapPin className="h-3.5 w-3.5 text-brand-orange shrink-0" />
+                  <span className="truncate">{siteConfig.address}</span>
+                </div>
+                <a
+                  href={siteConfig.googleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex shrink-0 items-center gap-1 rounded-md bg-brand-orange/10 px-2.5 py-1 text-xs font-semibold text-brand-orange transition-colors hover:bg-brand-orange hover:text-white"
+                >
+                  View on Google Maps →
+                </a>
+              </div>
             </div>
           </Reveal>
         </div>

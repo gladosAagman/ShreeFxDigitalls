@@ -94,8 +94,15 @@ export function Footer() {
                   <Phone className="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:scale-110" /> {siteConfig.phoneDisplay}
                 </a>
               </li>
-              <li className="flex items-start gap-2">
-                <MapPin className="mt-0.5 h-4 w-4 shrink-0" /> {siteConfig.address}
+              <li>
+                <a
+                  href={siteConfig.googleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-start gap-2 transition-colors hover:text-brand-orange"
+                >
+                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 transition-transform duration-300 group-hover:scale-110" /> {siteConfig.address}
+                </a>
               </li>
             </ul>
           </StaggerItem>
