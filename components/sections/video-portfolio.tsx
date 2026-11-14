@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { Play, Pause, Volume2, VolumeX, Maximize2, Sparkles, Film } from "lucide-react";
+import { useState } from "react";
+import { Play, Pause, Maximize2, Sparkles, Film, ExternalLink, X } from "lucide-react";
 import { Container, Section } from "@/components/layout/container";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,8 @@ import { cn } from "@/lib/utils";
 export function VideoPortfolioSection() {
   const [activeCategory, setActiveCategory] = useState<VideoCategory>("All");
   const [selectedVideo, setSelectedVideo] = useState<VideoShowcaseItem | null>(null);
-  const [playingId, setPlayingId] = useState<string | null>(null);
+  // Default to first video autoplaying automatically
+  const [playingId, setPlayingId] = useState<string | null>("yt-1");
 
   const filteredVideos =
     activeCategory === "All"
@@ -47,7 +48,6 @@ export function VideoPortfolioSection() {
                 key={cat}
                 onClick={() => {
                   setActiveCategory(cat);
-                  setPlayingId(null);
                 }}
                 className={cn(
                   "focus-ring rounded-full px-4 py-2 text-sm font-semibold transition-all duration-200",
@@ -93,38 +93,54 @@ export function VideoPortfolioSection() {
         {/* Modal Player */}
         {selectedVideo && (
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 backdrop-blur-md"
             onClick={() => setSelectedVideo(null)}
           >
             <div
-              className="relative max-h-[90vh] w-full max-w-3xl overflow-hidden rounded-2xl bg-neutral-950 p-2 shadow-2xl"
+              className={cn(
+                "relative w-full overflow-hidden rounded-2xl bg-neutral-950 p-2 shadow-2xl border border-neutral-800",
+                selectedVideo.aspectRatio === "portrait" ? "max-w-md" : "max-w-4xl"
+              )}
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between border-b border-neutral-800 p-3 text-white">
-                <div>
-                  <h3 className="text-base font-bold">{selectedVideo.title}</h3>
+                <div className="min-w-0 pr-4">
+                  <h3 className="text-base font-bold truncate">{selectedVideo.title}</h3>
                   <p className="text-xs text-neutral-400">{selectedVideo.category} · {selectedVideo.duration}</p>
                 </div>
-                <button
-                  onClick={() => setSelectedVideo(null)}
-                  className="rounded-full bg-white/10 px-3 py-1 text-sm font-semibold hover:bg-white/20"
-                >
-                  Close ✕
-                </button>
+                <div className="flex items-center gap-2">
+                  <a
+                    href={selectedVideo.youtubeUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 rounded-full bg-white/10 px-2.5 py-1 text-xs font-medium text-neutral-200 hover:bg-white/20"
+                    title="Watch on YouTube"
+                  >
+                    YouTube <ExternalLink className="h-3 w-3" />
+                  </a>
+                  <button
+                    onClick={() => setSelectedVideo(null)}
+                    className="rounded-full bg-white/10 p-1.5 text-sm font-semibold hover:bg-white/20 text-neutral-200"
+                    aria-label="Close modal"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
               </div>
 
-              <div className="flex max-h-[75vh] items-center justify-center bg-black">
-                <video
-                  key={selectedVideo.src}
-                  src={selectedVideo.src}
-                  poster={selectedVideo.poster}
-                  controls
-                  autoPlay
-                  playsInline
-                  className="max-h-[75vh] w-auto max-w-full rounded-b-xl"
-                >
-                  <source src={selectedVideo.src} type="video/mp4" />
-                </video>
+              <div
+                className={cn(
+                  "relative w-full overflow-hidden bg-black",
+                  selectedVideo.aspectRatio === "portrait" ? "aspect-[9/16] max-h-[75vh]" : "aspect-[16/9] max-h-[75vh]"
+                )}
+              >
+                <iframe
+                  src={`https://www.youtube-nocookie.com/embed/${selectedVideo.youtubeId}?autoplay=1&mute=0&rel=0&playsinline=1`}
+                  title={selectedVideo.title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  className="h-full w-full border-0"
+                />
               </div>
             </div>
           </div>
@@ -145,24 +161,7 @@ function VideoCard({
   onPlayToggle: () => void;
   onExpand: () => void;
 }) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isMuted, setIsMuted] = useState(true);
-
-  useEffect(() => {
-    if (!videoRef.current) return;
-    if (isPlaying) {
-      const playPromise = videoRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {});
-      }
-    } else {
-      videoRef.current.pause();
-    }
-  }, [isPlaying]);
-
-  const handleToggle = () => {
-    onPlayToggle();
-  };
+  const embedUrl = `https://www.youtube-nocookie.com/embed/${item.youtubeId}?autoplay=1&mute=1&loop=1&playlist=${item.youtubeId}&playsinline=1&controls=1&rel=0&modestbranding=1`;
 
   // Landscape / Widescreen Featured Showcase Layout
   if (item.aspectRatio === "landscape") {
@@ -170,81 +169,75 @@ function VideoCard({
       <div className="group relative sm:col-span-2 lg:col-span-3 flex flex-col md:flex-row overflow-hidden rounded-[var(--radius-xl)] border border-neutral-200 dark:border-neutral-800 bg-surface shadow-sm transition-all duration-300 hover:shadow-xl">
         {/* 16:9 Video Box */}
         <div className="relative w-full md:w-3/5 overflow-hidden bg-black aspect-[16/9]">
-          <video
-            ref={videoRef}
-            src={item.src}
-            poster={item.poster}
-            playsInline
-            muted={isMuted}
-            preload="metadata"
-            loop
-            className="h-full w-full object-cover cursor-pointer"
-            onClick={handleToggle}
-          >
-            <source src={item.src} type="video/mp4" />
-          </video>
+          {isPlaying ? (
+            <iframe
+              src={embedUrl}
+              title={item.title}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              className="h-full w-full border-0"
+            />
+          ) : (
+            <>
+              {/* YouTube Poster Image */}
+              <img
+                src={item.poster}
+                alt={item.title}
+                className="h-full w-full object-cover cursor-pointer transition-transform duration-300 group-hover:scale-105"
+                onClick={onPlayToggle}
+                loading="lazy"
+              />
 
-          {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20 pointer-events-none" />
+              {/* Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20 pointer-events-none" />
 
-          {/* Badges */}
-          <div className="absolute left-3 top-3 flex items-center gap-2">
-            <Badge variant="outline" className="border-white/30 bg-black/60 text-xs font-semibold text-white backdrop-blur-sm">
-              {item.category}
-            </Badge>
-            <Badge variant="outline" className="border-brand-orange/40 bg-brand-orange/20 text-xs font-semibold text-brand-orange backdrop-blur-sm">
-              Cinematic 16:9
-            </Badge>
-          </div>
+              {/* Badges */}
+              <div className="absolute left-3 top-3 flex items-center gap-2">
+                <Badge variant="outline" className="border-white/30 bg-black/60 text-xs font-semibold text-white backdrop-blur-sm">
+                  {item.category}
+                </Badge>
+                <Badge variant="outline" className="border-brand-orange/40 bg-brand-orange/20 text-xs font-semibold text-brand-orange backdrop-blur-sm">
+                  Cinematic 16:9
+                </Badge>
+              </div>
 
-          <div className="absolute right-3 top-3">
-            <span className="rounded-md bg-black/70 px-2 py-0.5 text-xs font-mono font-medium text-white backdrop-blur-sm">
-              {item.duration}
-            </span>
-          </div>
+              <div className="absolute right-3 top-3">
+                <span className="rounded-md bg-black/70 px-2 py-0.5 text-xs font-mono font-medium text-white backdrop-blur-sm">
+                  {item.duration}
+                </span>
+              </div>
 
-          {/* Big Center Play Button */}
-          {!isPlaying && (
-            <button
-              onClick={handleToggle}
-              className="absolute inset-0 m-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-orange/90 text-white shadow-xl transition-all duration-200 hover:scale-110 hover:bg-brand-orange"
-              aria-label="Play video"
-            >
-              <Play className="ml-1 h-7 w-7 fill-white" />
-            </button>
+              {/* Big Center Play Button */}
+              <button
+                onClick={onPlayToggle}
+                className="absolute inset-0 m-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-orange/90 text-white shadow-xl transition-all duration-200 hover:scale-110 hover:bg-brand-orange"
+                aria-label="Play video"
+              >
+                <Play className="ml-1 h-7 w-7 fill-white" />
+              </button>
+            </>
           )}
 
-          {/* Floating Controls */}
-          <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white">
+          {/* Floating Action Controls */}
+          <div className="absolute bottom-3 right-3 flex items-center gap-2 pointer-events-auto">
+            {isPlaying && (
+              <button
+                onClick={onPlayToggle}
+                className="rounded-full bg-black/70 p-2 text-white hover:bg-black/90 backdrop-blur-sm transition-colors"
+                title="Pause preview"
+                aria-label="Pause preview"
+              >
+                <Pause className="h-4 w-4" />
+              </button>
+            )}
             <button
-              onClick={handleToggle}
-              className="rounded-full bg-black/60 p-2 text-white hover:bg-black/80 backdrop-blur-sm transition-colors"
-              aria-label={isPlaying ? "Pause" : "Play"}
+              onClick={onExpand}
+              className="rounded-full bg-black/70 p-2 text-white hover:bg-black/90 backdrop-blur-sm transition-colors"
+              title="Watch full screen"
+              aria-label="Watch full screen"
             >
-              {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+              <Maximize2 className="h-4 w-4" />
             </button>
-
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => {
-                  if (videoRef.current) {
-                    videoRef.current.muted = !isMuted;
-                    setIsMuted(!isMuted);
-                  }
-                }}
-                className="rounded-full bg-black/60 p-2 text-white hover:bg-black/80 backdrop-blur-sm transition-colors"
-                aria-label={isMuted ? "Unmute" : "Mute"}
-              >
-                {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
-              </button>
-              <button
-                onClick={onExpand}
-                className="rounded-full bg-black/60 p-2 text-white hover:bg-black/80 backdrop-blur-sm transition-colors"
-                aria-label="Fullscreen modal"
-              >
-                <Maximize2 className="h-4 w-4" />
-              </button>
-            </div>
           </div>
         </div>
 
@@ -286,78 +279,72 @@ function VideoCard({
     <div className="group relative flex flex-col overflow-hidden rounded-[var(--radius-xl)] border border-neutral-200 dark:border-neutral-800 bg-surface shadow-sm transition-all duration-300 hover:shadow-lg">
       {/* Video Container */}
       <div className="relative w-full overflow-hidden bg-black aspect-[9/16]">
-        <video
-          ref={videoRef}
-          src={item.src}
-          poster={item.poster}
-          playsInline
-          muted={isMuted}
-          preload="metadata"
-          loop
-          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 cursor-pointer"
-          onClick={handleToggle}
-        >
-          <source src={item.src} type="video/mp4" />
-        </video>
+        {isPlaying ? (
+          <iframe
+            src={embedUrl}
+            title={item.title}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+            className="h-full w-full border-0"
+          />
+        ) : (
+          <>
+            {/* YouTube Poster Image */}
+            <img
+              src={item.poster}
+              alt={item.title}
+              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 cursor-pointer"
+              onClick={onPlayToggle}
+              loading="lazy"
+            />
 
-        {/* Overlay Controls */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20 pointer-events-none" />
+            {/* Overlay Controls */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20 pointer-events-none" />
 
-        {/* Top Badges */}
-        <div className="absolute left-3 top-3 flex items-center gap-2">
-          <Badge variant="outline" className="border-white/30 bg-black/60 text-xs font-semibold text-white backdrop-blur-sm">
-            {item.category}
-          </Badge>
-        </div>
+            {/* Top Badges */}
+            <div className="absolute left-3 top-3 flex items-center gap-2">
+              <Badge variant="outline" className="border-white/30 bg-black/60 text-xs font-semibold text-white backdrop-blur-sm">
+                {item.category}
+              </Badge>
+            </div>
 
-        <div className="absolute right-3 top-3">
-          <span className="rounded-md bg-black/70 px-2 py-0.5 text-xs font-mono font-medium text-white backdrop-blur-sm">
-            {item.duration}
-          </span>
-        </div>
+            <div className="absolute right-3 top-3">
+              <span className="rounded-md bg-black/70 px-2 py-0.5 text-xs font-mono font-medium text-white backdrop-blur-sm">
+                {item.duration}
+              </span>
+            </div>
 
-        {/* Center Play Button if paused */}
-        {!isPlaying && (
-          <button
-            onClick={handleToggle}
-            className="absolute inset-0 m-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand-orange/90 text-white shadow-xl transition-all duration-200 hover:scale-110 hover:bg-brand-orange"
-            aria-label="Play video"
-          >
-            <Play className="ml-1 h-6 w-6 fill-white" />
-          </button>
+            {/* Center Play Button */}
+            <button
+              onClick={onPlayToggle}
+              className="absolute inset-0 m-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand-orange/90 text-white shadow-xl transition-all duration-200 hover:scale-110 hover:bg-brand-orange"
+              aria-label="Play video"
+            >
+              <Play className="ml-1 h-6 w-6 fill-white" />
+            </button>
+          </>
         )}
 
-        {/* Bottom Floating Bar */}
-        <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white">
+        {/* Floating Action Controls */}
+        <div className="absolute bottom-3 right-3 flex items-center gap-2 pointer-events-auto">
+          {isPlaying && (
+            <button
+              onClick={onPlayToggle}
+              className="rounded-full bg-black/70 p-2 text-white hover:bg-black/90 backdrop-blur-sm transition-colors"
+              title="Pause preview"
+              aria-label="Pause preview"
+            >
+              <Pause className="h-4 w-4" />
+            </button>
+          )}
           <button
-            onClick={handleToggle}
-            className="rounded-full bg-black/60 p-2 text-white hover:bg-black/80 backdrop-blur-sm transition-colors"
-            aria-label={isPlaying ? "Pause" : "Play"}
+            onClick={onExpand}
+            className="rounded-full bg-black/70 p-2 text-white hover:bg-black/90 backdrop-blur-sm transition-colors"
+            title="Watch full screen"
+            aria-label="Watch full screen"
           >
-            {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+            <Maximize2 className="h-4 w-4" />
           </button>
-
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => {
-                if (videoRef.current) {
-                  videoRef.current.muted = !isMuted;
-                  setIsMuted(!isMuted);
-                }
-              }}
-              className="rounded-full bg-black/60 p-2 text-white hover:bg-black/80 backdrop-blur-sm transition-colors"
-              aria-label={isMuted ? "Unmute" : "Mute"}
-            >
-              {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
-            </button>
-            <button
-              onClick={onExpand}
-              className="rounded-full bg-black/60 p-2 text-white hover:bg-black/80 backdrop-blur-sm transition-colors"
-              aria-label="Fullscreen modal"
-            >
-              <Maximize2 className="h-4 w-4" />
-            </button>
-          </div>
         </div>
       </div>
 
