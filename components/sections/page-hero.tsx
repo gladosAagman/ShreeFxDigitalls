@@ -56,7 +56,7 @@ export function PageHero({
 
       <Container className="relative z-10 mx-auto max-w-4xl text-center">
         <TiltCard maxTilt={3} className="mx-auto mt-12 w-full">
-          <div className="relative flex flex-col items-center justify-center overflow-hidden rounded-[var(--radius-xl)] border border-indigo-100/90 bg-white/95 px-10 py-16 shadow-[0_24px_70px_-15px_rgba(79,70,229,0.16),0_0_0_1px_rgba(79,70,229,0.06),0_4px_6px_-2px_rgba(0,0,0,0.03)] backdrop-blur-xl transition-all duration-500 dark:border-orange-500/20 dark:bg-black/50 dark:shadow-[0_8px_80px_rgba(241,128,41,0.25)] md:px-20 md:py-20">
+          <div className="relative flex flex-col items-center justify-center overflow-hidden rounded-[var(--radius-xl)] border border-indigo-100/90 bg-white/95 px-5 py-10 sm:px-10 sm:py-16 shadow-[0_24px_70px_-15px_rgba(79,70,229,0.16),0_0_0_1px_rgba(79,70,229,0.06),0_4px_6px_-2px_rgba(0,0,0,0.03)] backdrop-blur-xl transition-all duration-500 dark:border-orange-500/20 dark:bg-black/50 dark:shadow-[0_8px_80px_rgba(241,128,41,0.25)] md:px-20 md:py-20">
 
             {/* Glowing accent inside the card: blue in light mode, orange in dark mode */}
             <div className="pointer-events-none absolute -top-20 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-indigo-500/15 blur-3xl dark:bg-orange-500/20" />

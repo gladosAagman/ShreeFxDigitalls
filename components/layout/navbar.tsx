@@ -52,7 +52,7 @@ export function Navbar() {
     <header>
       <FloatingNavbar
         left={
-          <Link href="/" className="cursor-target relative flex items-center gap-2 focus-ring rounded-full">
+          <Link href="/" className="cursor-target relative flex items-center gap-1.5 sm:gap-2 focus-ring rounded-full shrink-0">
             <Image
               src="/shreefx-logo.png"
               alt={siteConfig.name}
@@ -60,28 +60,20 @@ export function Navbar() {
               height={88}
               className={cn(
                 "relative z-10 shrink-0 object-contain transition-all duration-300 ease-out",
-                scrolled ? "h-11 w-11" : "h-[77px] w-[77px]"
+                scrolled
+                  ? "h-9 w-9 sm:h-10 sm:w-10 md:h-11 md:w-11"
+                  : "h-10 w-10 sm:h-11 sm:w-11 md:h-14 md:w-14"
               )}
               priority
             />
-            <AnimatePresence>
-              {!scrolled && (
-                <motion.span
-                  initial={{ opacity: 0, x: 0 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -30 }}
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
-                  className="relative z-0 flex items-baseline gap-1.5 whitespace-nowrap overflow-hidden"
-                >
-                  <span className="text-gradient-brand text-[26px] font-extrabold italic leading-none tracking-tighter">
-                    ShreeFX
-                  </span>
-                  <span className="text-[20px] font-bold leading-none tracking-tight text-text">
-                    Digitals
-                  </span>
-                </motion.span>
-              )}
-            </AnimatePresence>
+            <div className="relative z-0 flex items-baseline gap-1 sm:gap-1.5 whitespace-nowrap">
+              <span className="text-gradient-brand text-[18px] sm:text-[21px] md:text-[25px] font-extrabold italic leading-none tracking-tight">
+                ShreeFX
+              </span>
+              <span className="text-[13px] sm:text-[16px] md:text-[19px] font-bold leading-none tracking-tight text-text">
+                Digitals
+              </span>
+            </div>
           </Link>
         }
         center={mainNav.map((link) => {
@@ -136,12 +128,12 @@ export function Navbar() {
             transition={{ duration: 0.25 }}
             className="container-page fixed inset-x-0 top-20 z-40 md:hidden"
           >
-            <div className="mt-2 flex flex-col gap-1 rounded-3xl border border-neutral-200 bg-surface p-4 shadow-[var(--shadow-lg)]">
+            <div className="mt-2 flex flex-col gap-1 rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-surface/95 dark:bg-neutral-900/95 backdrop-blur-md p-4 shadow-[var(--shadow-lg)]">
               {mainNav.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="cursor-target focus-ring rounded-2xl px-4 py-3 text-[16px] font-medium text-text hover:bg-neutral-100"
+                  className="cursor-target focus-ring rounded-2xl px-4 py-3 text-[16px] font-medium text-text hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
                 >
                   {link.label}
                 </Link>
