@@ -26,10 +26,10 @@ export interface FloatingNavbarProps {
  */
 export function FloatingNavbar({ left, center, right, className }: FloatingNavbarProps) {
   const { scrollY } = useScroll();
-  const maxWidth = useTransform(scrollY, [0, 200], [1280, 780]);
-  const y = useTransform(scrollY, [0, 50, 200], [10, 16, 20]);
-  const barHeight = useTransform(scrollY, [0, 200], [70, 58]);
-  const paddingInline = useTransform(scrollY, [0, 200], [16, 14]);
+  const maxWidth = useTransform(scrollY, [0, 200], [1320, 1100]);
+  const y = useTransform(scrollY, [0, 50, 200], [12, 18, 22]);
+  const barHeight = useTransform(scrollY, [0, 200], [78, 66]);
+  const paddingInline = useTransform(scrollY, [0, 200], [24, 20]);
   const borderRadius = useTransform(scrollY, [0, 200], [9999, 9999]);
 
   const [isScrolled, setIsScrolled] = useState(false);
@@ -52,7 +52,7 @@ export function FloatingNavbar({ left, center, right, className }: FloatingNavba
   }, []);
 
   return (
-    <div className={cn("pointer-events-none fixed inset-x-0 top-0 z-50 flex justify-center px-2.5 sm:px-4 md:px-6", className)}>
+    <div className={cn("pointer-events-none fixed inset-x-0 top-0 z-50 flex justify-center px-3 sm:px-5 md:px-6", className)}>
       <motion.div className="pointer-events-auto relative w-full" style={{ maxWidth, y, borderRadius }}>
         <LiquidGlass
           enabled={isScrolled}
@@ -61,9 +61,9 @@ export function FloatingNavbar({ left, center, right, className }: FloatingNavba
           key={isScrolled ? "docked" : "top"}
         >
           <motion.nav
-            className="flex w-full items-center justify-between gap-2 md:grid md:grid-cols-[auto_1fr_auto] md:gap-3"
+            className="flex w-full items-center justify-between gap-3 md:grid md:grid-cols-[auto_1fr_auto] md:gap-4"
             style={{
-              minHeight: 56,
+              minHeight: 60,
               height: barHeight,
               paddingLeft: paddingInline,
               paddingRight: paddingInline,
@@ -71,7 +71,7 @@ export function FloatingNavbar({ left, center, right, className }: FloatingNavba
           >
             <div className="flex min-w-0 shrink-0 items-center gap-2">{left}</div>
             {center ? (
-              <div className="hidden min-w-0 items-center justify-center gap-1 overflow-hidden md:flex">{center}</div>
+              <div className="hidden min-w-0 items-center justify-center gap-1 md:flex">{center}</div>
             ) : null}
             <div className="flex shrink-0 items-center justify-self-end gap-2">{right}</div>
           </motion.nav>

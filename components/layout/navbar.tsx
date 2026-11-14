@@ -52,7 +52,7 @@ export function Navbar() {
     <header>
       <FloatingNavbar
         left={
-          <Link href="/" className="cursor-target relative flex items-center gap-1.5 sm:gap-2 focus-ring rounded-full shrink-0">
+          <Link href="/" className="cursor-target relative flex items-center gap-2 focus-ring rounded-full shrink-0">
             <Image
               src="/shreefx-logo.png"
               alt={siteConfig.name}
@@ -61,16 +61,16 @@ export function Navbar() {
               className={cn(
                 "relative z-10 shrink-0 object-contain transition-all duration-300 ease-out",
                 scrolled
-                  ? "h-9 w-9 sm:h-10 sm:w-10 md:h-11 md:w-11"
-                  : "h-10 w-10 sm:h-11 sm:w-11 md:h-14 md:w-14"
+                  ? "h-10 w-10 md:h-11 md:w-11"
+                  : "h-11 w-11 sm:h-12 sm:w-12 md:h-14 md:w-14"
               )}
               priority
             />
             <div className="relative z-0 flex items-baseline gap-1 sm:gap-1.5 whitespace-nowrap">
-              <span className="text-gradient-brand text-[18px] sm:text-[21px] md:text-[25px] font-extrabold italic leading-none tracking-tight">
+              <span className="text-gradient-brand text-[19px] sm:text-[22px] md:text-[25px] font-extrabold italic leading-none tracking-tight">
                 ShreeFX
               </span>
-              <span className="text-[13px] sm:text-[16px] md:text-[19px] font-bold leading-none tracking-tight text-text">
+              <span className="text-[14px] sm:text-[16px] md:text-[19px] font-bold leading-none tracking-tight text-text">
                 Digitals
               </span>
             </div>
@@ -83,15 +83,15 @@ export function Navbar() {
               key={link.href}
               href={link.href}
               className={cn(
-                "cursor-target group focus-ring relative inline-flex items-center rounded-full px-4 py-2 font-medium transition-all duration-300",
-                scrolled ? "text-[15px]" : "text-[19px] px-5",
+                "cursor-target group focus-ring relative inline-flex items-center rounded-full font-medium transition-all duration-300",
+                scrolled ? "text-[14px] px-3.5 py-1.5" : "text-[16px] px-4 py-2",
                 active ? "text-brand-orange" : "text-text-muted hover:text-brand-orange"
               )}
             >
               <TextRoll>{link.label}</TextRoll>
               <span
                 className={cn(
-                  "pointer-events-none absolute inset-x-4 -bottom-0.5 h-[2px] scale-x-0 rounded-full bg-[linear-gradient(90deg,var(--color-brand-orange),var(--color-brand-purple))] transition-transform duration-300 origin-left group-hover:scale-x-100",
+                  "pointer-events-none absolute inset-x-3.5 -bottom-0.5 h-[2px] scale-x-0 rounded-full bg-[linear-gradient(90deg,var(--color-brand-orange),var(--color-brand-purple))] transition-transform duration-300 origin-left group-hover:scale-x-100",
                   active && "scale-x-100"
                 )}
               />
