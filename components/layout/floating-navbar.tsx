@@ -57,8 +57,10 @@ export function FloatingNavbar({ left, center, right, className }: FloatingNavba
         <LiquidGlass
           enabled={isScrolled}
           radius={999}
-          className="liquid-glass--dock rounded-full"
-          key={isScrolled ? "docked" : "top"}
+          className={cn(
+            "rounded-full transition-colors duration-300",
+            isScrolled ? "liquid-glass--dock shadow-lg" : "bg-surface/80 dark:bg-black/60 shadow-sm"
+          )}
         >
           <motion.nav
             className="flex w-full items-center justify-between gap-3 md:grid md:grid-cols-[auto_1fr_auto] md:gap-4"

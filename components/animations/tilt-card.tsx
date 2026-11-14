@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import type { ReactNode } from "react";
 
@@ -13,6 +13,7 @@ export function TiltCard({
   className?: string;
   maxTilt?: number;
 }) {
+  const [isInteractive, setIsInteractive] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const rectRef = useRef<DOMRect | null>(null);
   const px = useMotionValue(0.5);
@@ -24,6 +25,16 @@ export function TiltCard({
   const rotateX = useTransform(springY, [0, 1], [maxTilt, -maxTilt]);
   const rotateY = useTransform(springX, [0, 1], [-maxTilt, maxTilt]);
 
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      setIsInteractive(true);
+    }
+  }, []);
+
+  if (!isInteractive) {
+    return <div className={className}>{children}</div>;
+  }
+
   function handleMouseEnter() {
     if (ref.current) {
       rectRef.current = ref.current.getBoundingClientRect();
@@ -32,7 +43,7 @@ export function TiltCard({
 
   function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
     const el = ref.current;
-    if (!el || window.matchMedia("(pointer: coarse)").matches) return;
+    if (!el) return;
     const rect = rectRef.current || el.getBoundingClientRect();
     px.set((e.clientX - rect.left) / rect.width);
     py.set((e.clientY - rect.top) / rect.height);

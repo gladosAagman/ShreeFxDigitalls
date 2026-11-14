@@ -67,6 +67,9 @@ export default function Iridescence({
 
   useEffect(() => {
     if (!ctnDom.current) return;
+    if (typeof window !== "undefined" && (window.innerWidth <= 768 || window.matchMedia("(pointer: coarse)").matches)) {
+      return;
+    }
     const ctn = ctnDom.current;
     const renderer = new Renderer({
       dpr: typeof window !== "undefined" ? Math.min(window.devicePixelRatio || 1, 1.0) : 1,

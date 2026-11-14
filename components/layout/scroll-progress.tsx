@@ -9,7 +9,7 @@ export function ScrollProgress() {
   return (
     <motion.div
       style={{ scaleX }}
-      className="fixed inset-x-0 top-0 z-[60] h-[3px] origin-left bg-[linear-gradient(90deg,var(--color-brand-orange),var(--color-brand-purple))]"
+      className="fixed inset-x-0 top-0 z-[60] hidden md:block h-[3px] origin-left bg-[linear-gradient(90deg,var(--color-brand-orange),var(--color-brand-purple))]"
     />
   );
 }

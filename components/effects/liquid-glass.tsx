@@ -39,6 +39,9 @@ export function LiquidGlass({ children, className, radius = 24, scale = 40, chro
 
   useEffect(() => {
     if (!enabled || !ref.current) return;
+    if (typeof window !== "undefined" && (window.innerWidth <= 768 || window.matchMedia("(pointer: coarse)").matches)) {
+      return;
+    }
     const instance = liquidGlass(ref.current, { radius, scale, chroma, blur });
     return () => instance.destroy();
   }, [enabled, radius, scale, chroma, blur]);

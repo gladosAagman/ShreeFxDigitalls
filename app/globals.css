@@ -431,12 +431,26 @@ body {
 }
 
 @media (max-width: 768px), (hover: none), (pointer: coarse) {
+  html {
+    scroll-behavior: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
   .glass-panel,
   .card-liquid::after,
   .liquid-glass,
   [class*="backdrop-blur-"] {
     -webkit-backdrop-filter: none !important;
     backdrop-filter: none !important;
+  }
+
+  .liquid-glass--dock {
+    background: rgba(255, 255, 255, 0.96) !important;
+  }
+
+  .dark .liquid-glass--dock {
+    background: rgba(12, 12, 14, 0.94) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
   }
 
   .dark .glass-panel,

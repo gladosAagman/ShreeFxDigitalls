@@ -18,7 +18,7 @@ const particles = buildParticles(20);
 
 export function Particles({ className, quantity, ease, color, refresh, ...props }: any) {
   return (
-    <div className={`liquid-particles ${className || ""}`} aria-hidden {...props}>
+    <div className={`liquid-particles hidden md:block ${className || ""}`} aria-hidden {...props}>
       {particles.map((p, i) => (
         <span
           key={i}
