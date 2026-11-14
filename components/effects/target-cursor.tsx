@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback, useMemo } from "react";
+import { useEffect, useRef, useCallback, useMemo, useState } from "react";
 import { gsap } from "gsap";
 import "./target-cursor.css";
 
@@ -63,6 +63,11 @@ export default function TargetCursor({
   const targetCornerPositionsRef = useRef<{ x: number; y: number }[] | null>(null);
   const tickerFnRef = useRef<(() => void) | null>(null);
   const activeStrengthRef = useRef(0);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const isMobile = useMemo(() => {
     if (typeof window === "undefined") return true;
@@ -413,7 +418,7 @@ export default function TargetCursor({
     }
   }, [spinDuration, isMobile]);
 
-  if (isMobile) {
+  if (!mounted || isMobile) {
     return null;
   }
 

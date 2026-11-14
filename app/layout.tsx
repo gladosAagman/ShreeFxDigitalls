@@ -74,11 +74,11 @@ export default function RootLayout({
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <OrganizationJsonLd />
       </head>
       <body className="min-h-full flex flex-col bg-background text-text">
         <ThemeProvider>
           <ServiceModalProvider>
-            <OrganizationJsonLd />
             <TargetCursor spinDuration={2} hideDefaultCursor parallaxOn cursorColorOnTarget="#F18029" />
             <Particles />
             <CursorGlow />
