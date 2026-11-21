@@ -57,6 +57,17 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     images: [siteConfig.ogImage],
   },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.png", type: "image/png", sizes: "500x500" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: [{ url: "/apple-icon.png", sizes: "500x500", type: "image/png" }],
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+  },
   robots: { index: true, follow: true },
 };
 
@@ -73,6 +84,9 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${manrope.variable} h-full antialiased`}
     >
       <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/icon.png" type="image/png" sizes="500x500" />
+        <link rel="apple-touch-icon" href="/apple-icon.png" sizes="500x500" />
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <OrganizationJsonLd />
       </head>

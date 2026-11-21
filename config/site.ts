@@ -3,7 +3,7 @@ export const siteConfig = {
   tagline: "Your Digital Growth Partner",
   description:
     "ShreeFX Digitals helps startups, local businesses, and enterprises grow faster with performance marketing, WhatsApp automation, AI chatbots, creative content, and modern website development.",
-  url: "https://www.shreefxdigitals.com",
+  url: "https://www.shreefxdigital.com",
   ogImage: "/og-image.png",
   keywords: [
     "digital marketing agency",
